@@ -19,6 +19,6 @@ public class Carro {
             carro.cor = "Vermelha";
             carro.anoDeLancamento = 2009;
             carro.fichaTecnica();
-            System.out.println(carro.calcularAno(2022));
+            System.out.println("\n o Carro tem "+carro.calcularAno(2022)+" anos");
         }
     }
