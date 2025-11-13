@@ -5,8 +5,11 @@ public class Principal {
         meuFilme.anoDeLancamento=1970;
         meuFilme.duracaoEmMinutos=80;
         meuFilme.incluidoNoPlano=true;
-        meuFilme.avalia(66);
-        meuFilme.avalia(88);
+        meuFilme.avalia(10);
+        meuFilme.avalia(10);
+        meuFilme.avalia(10);
+
+        System.out.println("A media de notas foi "+meuFilme.pegaMedia()+" Com "+meuFilme.totalDeAvaliacoes+" Avaliações");
 
 
                 }

@@ -9,6 +9,9 @@ public class Filme {
     void exibeFichaTecnica(){
         System.out.println("o nome do filme é "+nome);
         System.out.println("Ao ano de lancamento é "+anoDeLancamento);
+        System.out.println("Duração em minutos"+duracaoEmMinutos);
+        System.out.println("Esta incluido no plano? "+incluidoNoPlano);
+
     }
 
     void avalia(double nota){
