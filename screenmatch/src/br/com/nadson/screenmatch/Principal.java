@@ -1,6 +1,8 @@
-import br.com.nadson.modelo.Filme;
-import br.com.nadson.modelo.Series;
-import cauculadora.CalcularTempo;
+package br.com.nadson.screenmatch;
+
+import br.com.nadson.screenmatch.modelo.Filme;
+import br.com.nadson.screenmatch.modelo.Series;
+import br.com.nadson.screenmatch.cauculadora.CalcularTempo;
 
 public class Principal {
     public static void main(String[] args) {

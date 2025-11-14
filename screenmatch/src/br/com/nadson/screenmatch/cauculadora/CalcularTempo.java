@@ -1,6 +1,7 @@
-package cauculadora;
+package br.com.nadson.screenmatch.cauculadora;
 
-import br.com.nadson.modelo.Titulo;
+
+import br.com.nadson.screenmatch.modelo.Titulo;
 
 public class CalcularTempo {
     int tempoTotal;

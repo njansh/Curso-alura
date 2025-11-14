@@ -1,4 +1,4 @@
-package br.com.nadson.modelo;
+package br.com.nadson.screenmatch.modelo;
 
 public class Titulo {
     private String nome;
