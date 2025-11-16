@@ -37,6 +37,8 @@ public class Principal {
         FiltroRecomendacao filtro=new FiltroRecomendacao();
         filtro.filtro(meuFilme);
 
+
+
         Episodio episodio=new Episodio();
         episodio.setNumero(1);
         episodio.setSerie(doctorWho);
