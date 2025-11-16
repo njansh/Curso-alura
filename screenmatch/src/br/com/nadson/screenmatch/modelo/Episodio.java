@@ -1,9 +1,12 @@
 package br.com.nadson.screenmatch.modelo;
 
-public class Episodio {
+import br.com.nadson.screenmatch.cauculadora.Classificavel;
+
+public class Episodio implements Classificavel {
         private int numero;
         private String nome;
         private Series serie;
+        private int visualizacoes;
 
     public String getNome() {
         return nome;
@@ -27,5 +30,22 @@ public class Episodio {
 
     public void setSerie(Series serie) {
         this.serie = serie;
+    }
+
+    public int getVisualizacoes() {
+        return visualizacoes;
+    }
+
+    public void setVisualizacoes(int visualizacoes) {
+        this.visualizacoes = visualizacoes;
+    }
+
+    @Override
+    public int getClassificacao() {
+        if(visualizacoes>=400){
+            return 4;
+        }else {
+            return 2;
+        }
     }
 }

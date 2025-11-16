@@ -1,5 +1,7 @@
 package br.com.nadson.screenmatch;
 
+import br.com.nadson.screenmatch.cauculadora.FiltroRecomendacao;
+import br.com.nadson.screenmatch.modelo.Episodio;
 import br.com.nadson.screenmatch.modelo.Filme;
 import br.com.nadson.screenmatch.modelo.Series;
 import br.com.nadson.screenmatch.cauculadora.CalcularTempo;
@@ -31,6 +33,15 @@ public class Principal {
         calculador.inclui(meuFilme);
         calculador.inclui(doctorWho);
         System.out.println(calculador.getTempoTotal());
+
+        FiltroRecomendacao filtro=new FiltroRecomendacao();
+        filtro.filtro(meuFilme);
+
+        Episodio episodio=new Episodio();
+        episodio.setNumero(1);
+        episodio.setSerie(doctorWho);
+        episodio.setVisualizacoes(300);
+        filtro.filtro(episodio);
 
 
 
