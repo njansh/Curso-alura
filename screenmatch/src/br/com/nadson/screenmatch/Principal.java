@@ -6,18 +6,39 @@ import br.com.nadson.screenmatch.modelo.Filme;
 import br.com.nadson.screenmatch.modelo.Series;
 import br.com.nadson.screenmatch.cauculadora.CalcularTempo;
 
+import java.util.ArrayList;
+
 public class Principal {
     public static void main(String[] args) {
-        Filme meuFilme=new Filme();
-        meuFilme.setNome("o poderoso Chefao");
-        meuFilme.setAnoDeLancamento(1970);
-        meuFilme.setDuracaoEmMinutos(80);
-        meuFilme.setIncluidoNoPlano(true);
-        meuFilme.avalia(10);
-        meuFilme.avalia(10);
-        meuFilme.avalia(10);
+        Filme avatarALendaDeAnng=new Filme();
+        avatarALendaDeAnng.setNome("Avatar a lenda de anng");
+        avatarALendaDeAnng.setAnoDeLancamento(2006);
+        avatarALendaDeAnng.setDuracaoEmMinutos(90);
+        avatarALendaDeAnng.setIncluidoNoPlano(true);
+        avatarALendaDeAnng.avalia(10);
+        avatarALendaDeAnng.avalia(10);
+        avatarALendaDeAnng.avalia(10);
 
-        System.out.println("A media de notas foi "+meuFilme.pegaMedia()+" Com "+ meuFilme.getTotalDeAvaliacoes() +" Avaliações");
+        Filme oPoderosoChefao=new Filme();
+        oPoderosoChefao.setNome("o poderoso Chefao");
+        oPoderosoChefao.setAnoDeLancamento(1970);
+        oPoderosoChefao.setDuracaoEmMinutos(80);
+        oPoderosoChefao.setIncluidoNoPlano(true);
+        oPoderosoChefao.avalia(10);
+        oPoderosoChefao.avalia(10);
+        oPoderosoChefao.avalia(10);
+
+        Filme matrix=new Filme();
+        matrix.setNome("Matrix");
+        matrix.setAnoDeLancamento(1990);
+        matrix.setDuracaoEmMinutos(120);
+        matrix.setIncluidoNoPlano(true);
+        matrix.avalia(9);
+        matrix.avalia(10);
+        matrix.avalia(10);
+
+
+        System.out.println("A media de notas foi "+matrix.pegaMedia()+" Com "+ matrix.getTotalDeAvaliacoes() +" Avaliações");
 
         Series doctorWho=new Series();
         doctorWho.setNome("Doctor Who");
@@ -30,12 +51,12 @@ public class Principal {
         System.out.println(doctorWho.getDuracaoEmMinutos());
 
         CalcularTempo calculador=new CalcularTempo();
-        calculador.inclui(meuFilme);
+        calculador.inclui(matrix);
         calculador.inclui(doctorWho);
         System.out.println(calculador.getTempoTotal());
 
         FiltroRecomendacao filtro=new FiltroRecomendacao();
-        filtro.filtro(meuFilme);
+        filtro.filtro(matrix);
 
 
 
@@ -45,8 +66,14 @@ public class Principal {
         episodio.setVisualizacoes(300);
         filtro.filtro(episodio);
 
+        var filmes=new ArrayList<Filme>();
+        filmes.add(oPoderosoChefao)   ;
+        filmes.add(avatarALendaDeAnng);
+        filmes.add(matrix);
 
-
+        System.out.println("Tamanho da lista "+filmes.size());
+        System.out.println(filmes.toString());
+        System.out.println(filmes.get(0));
                 }
 
 
