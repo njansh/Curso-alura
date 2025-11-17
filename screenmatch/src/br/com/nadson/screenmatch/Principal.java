@@ -10,27 +10,27 @@ import java.util.ArrayList;
 
 public class Principal {
     public static void main(String[] args) {
-        Filme avatarALendaDeAnng=new Filme();
-        avatarALendaDeAnng.setNome("Avatar a lenda de anng");
-        avatarALendaDeAnng.setAnoDeLancamento(2006);
+        Filme avatarALendaDeAnng=new Filme("Avatar a lenda de anng",2006);
+      //  avatarALendaDeAnng.setNome("Avatar a lenda de anng");
+      //  avatarALendaDeAnng.setAnoDeLancamento(2006);
         avatarALendaDeAnng.setDuracaoEmMinutos(90);
         avatarALendaDeAnng.setIncluidoNoPlano(true);
         avatarALendaDeAnng.avalia(10);
         avatarALendaDeAnng.avalia(10);
         avatarALendaDeAnng.avalia(10);
 
-        Filme oPoderosoChefao=new Filme();
-        oPoderosoChefao.setNome("o poderoso Chefao");
-        oPoderosoChefao.setAnoDeLancamento(1970);
+        Filme oPoderosoChefao=new Filme("O poderoso Chefao",1970);
+       // oPoderosoChefao.setNome("o poderoso Chefao");
+       // oPoderosoChefao.setAnoDeLancamento(1970);
         oPoderosoChefao.setDuracaoEmMinutos(80);
         oPoderosoChefao.setIncluidoNoPlano(true);
         oPoderosoChefao.avalia(10);
         oPoderosoChefao.avalia(10);
         oPoderosoChefao.avalia(10);
 
-        Filme matrix=new Filme();
-        matrix.setNome("Matrix");
-        matrix.setAnoDeLancamento(1990);
+        Filme matrix=new Filme("matrix",1990);
+        //matrix.setNome("Matrix");
+       // matrix.setAnoDeLancamento(1990);
         matrix.setDuracaoEmMinutos(120);
         matrix.setIncluidoNoPlano(true);
         matrix.avalia(9);
@@ -40,9 +40,9 @@ public class Principal {
 
         System.out.println("A media de notas foi "+matrix.pegaMedia()+" Com "+ matrix.getTotalDeAvaliacoes() +" Avaliações");
 
-        Series doctorWho=new Series();
-        doctorWho.setNome("Doctor Who");
-        doctorWho.setAnoDeLancamento(2000);
+        Series doctorWho=new Series("Doctor Who",2000);
+//        doctorWho.setNome("Doctor Who");
+//        doctorWho.setAnoDeLancamento(2000);
         doctorWho.exibeFichaTecnica();
         doctorWho.setTemporadas(13);
         doctorWho.setMinutosPorEpisodio(70);

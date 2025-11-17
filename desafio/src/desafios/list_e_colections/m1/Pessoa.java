@@ -1,4 +1,4 @@
-package desafios.list_e_colections;
+package desafios.list_e_colections.m1;
 
 public class Pessoa {
     private String nome;

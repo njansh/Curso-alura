@@ -1,7 +1,6 @@
-package desafios.list_e_colections;
+package desafios.list_e_colections.m1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Principal {
     public static void main(String[] args) {
