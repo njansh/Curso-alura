@@ -1,4 +1,4 @@
-package br.com.nadson.screenmatch;
+package br.com.nadson.screenmatch.principal;
 
 import br.com.nadson.screenmatch.cauculadora.FiltroRecomendacao;
 import br.com.nadson.screenmatch.modelo.Episodio;
