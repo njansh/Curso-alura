@@ -8,6 +8,9 @@ import br.com.nadson.screenmatch.modelo.Series;
 import br.com.nadson.screenmatch.modelo.Titulo;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class PrincipalLista {
     public static void main(String[] args) {
@@ -39,6 +42,18 @@ for(Titulo item:lista){
         System.out.println(((Filme) item).getClassificacao());
     }
 }
+
+        List<String> buscaPorArtista=new ArrayList<>();
+buscaPorArtista.add("Adam Samdler");
+buscaPorArtista.add("Jason Momoa");
+buscaPorArtista.add("Brad pitch");
+
+        Collections.sort(buscaPorArtista);
+        Collections.sort(lista);
+        System.out.println("Ordenando com o comparator");
+        System.out.println(lista);
+        System.out.println("Ordenando com o .short");
+        lista.sort(Comparator.comparing(Titulo::getAnoDeLancamento));
     }
 
 

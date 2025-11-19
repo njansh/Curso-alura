@@ -1,6 +1,6 @@
 package br.com.nadson.screenmatch.modelo;
 
-public class Titulo {
+public class Titulo implements Comparable<Titulo> {
     private String nome;
     private int anoDeLancamento;
     private double somaDasAvaliacoes;
@@ -66,5 +66,10 @@ public class Titulo {
     public double pegaMedia(){
         double media=(somaDasAvaliacoes/totalDeAvaliacoes);
         return media;
+    }
+
+    @Override
+    public int compareTo(Titulo outro) {
+        return this.getNome().compareTo(outro.getNome());
     }
 }
