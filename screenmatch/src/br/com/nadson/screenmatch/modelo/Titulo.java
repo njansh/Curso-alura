@@ -1,5 +1,8 @@
 package br.com.nadson.screenmatch.modelo;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 public class Titulo implements Comparable<Titulo> {
     private String nome;
     private int anoDeLancamento;
@@ -73,3 +76,5 @@ public class Titulo implements Comparable<Titulo> {
         return this.getNome().compareTo(outro.getNome());
     }
 }
+
+
