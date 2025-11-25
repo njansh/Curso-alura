@@ -1,10 +1,14 @@
 package br.com.nadson.screenmatch.modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 public class Titulo implements Comparable<Titulo> {
+    @SerializedName("Title")
     private String nome;
+    @SerializedName("Year")
     private int anoDeLancamento;
     private double somaDasAvaliacoes;
     private boolean incluidoNoPlano;
@@ -14,6 +18,13 @@ public class Titulo implements Comparable<Titulo> {
     public Titulo(String nome, int anoDeLancamento) {
         this.nome = nome;
         this.anoDeLancamento = anoDeLancamento;
+    }
+
+    public Titulo(TituloOmdb meuTituloOmdb) {
+    this.nome= meuTituloOmdb.title();
+    this.anoDeLancamento=Integer.valueOf(meuTituloOmdb.year());
+    this.duracaoEmMinutos=Integer.valueOf(meuTituloOmdb.runtime().substring(0,2));
+
     }
 
     public int getAnoDeLancamento() {
@@ -74,6 +85,15 @@ public class Titulo implements Comparable<Titulo> {
     @Override
     public int compareTo(Titulo outro) {
         return this.getNome().compareTo(outro.getNome());
+    }
+
+
+    @Override
+    public String toString() {
+        return
+                "nome='" + nome + '\'' +
+                ", anoDeLancamento=" + anoDeLancamento +" duração em minutos "+duracaoEmMinutos+
+                '}';
     }
 }
 
