@@ -1,5 +1,6 @@
 package br.com.nadson.screenmatch.principal;
 
+import br.com.nadson.screenmatch.excessao.ErroConvertenderAnoExcepion;
 import br.com.nadson.screenmatch.modelo.Titulo;
 import br.com.nadson.screenmatch.modelo.TituloOmdb;
 import com.google.gson.FieldNamingPolicy;
@@ -11,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.IllegalFormatException;
 import java.util.Scanner;
 
 public class PrincipalComBusca {
@@ -18,27 +20,42 @@ public class PrincipalComBusca {
         Scanner leitura=new Scanner(System.in);
         System.out.println("Diga o nome do filme para a busca");
         var busca=leitura.nextLine();
-        String endereco="https://www.omdbapi.com/?t="+busca+"&apikey=ac6db349";
+        String endereco="https://www.omdbapi.com/?t="+busca.replace(" ", "+")+"&apikey=ac6db349";
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endereco))
+                    .build();
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endereco))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
+            String json=response.body()
+                    ;
 
-String json=response.body()
-        ;
-
-        System.out.println(json);
-Gson gson=new GsonBuilder().
-        setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();;
+            System.out.println(json);
+            Gson gson=new GsonBuilder().
+                    setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();;
 //Titulo meuTitulo=     gson.fromJson(json, Titulo.class);
-TituloOmdb meuTituloOmdb =     gson.fromJson(json, TituloOmdb.class);
+            TituloOmdb meuTituloOmdb =     gson.fromJson(json, TituloOmdb.class);
 
-        System.out.println("Titulo no Omdb"+meuTituloOmdb);
+            System.out.println("Titulo no Omdb"+meuTituloOmdb);
+            //   try {
+            Titulo meuTitulo=new Titulo(meuTituloOmdb);
+            System.out.println("MEu titulo normal"+meuTitulo);
+        } catch (NumberFormatException e) {
+            System.out.println("Aconteceu um erro \n "+e.getMessage());
+        } catch (ErroConvertenderAnoExcepion e) {
+            System.out.println(e.getMessage());
+        }
 
-        Titulo meuTitulo=new Titulo(meuTituloOmdb);
-        System.out.println("MEu titulo normal"+meuTitulo);
+        catch (Exception e){
+            System.out.println("Algum erro ocorreu, verifique o endereco");
+            System.out.println(e.getMessage());
+
+        }
+
+
+
+        System.out.println("fim de tudo");
     }
 }

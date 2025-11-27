@@ -1,14 +1,14 @@
 package br.com.nadson.screenmatch.modelo;
 
+import br.com.nadson.screenmatch.excessao.ErroConvertenderAnoExcepion;
 import com.google.gson.annotations.SerializedName;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 public class Titulo implements Comparable<Titulo> {
-    @SerializedName("Title")
+
     private String nome;
-    @SerializedName("Year")
     private int anoDeLancamento;
     private double somaDasAvaliacoes;
     private boolean incluidoNoPlano;
@@ -22,8 +22,12 @@ public class Titulo implements Comparable<Titulo> {
 
     public Titulo(TituloOmdb meuTituloOmdb) {
     this.nome= meuTituloOmdb.title();
+    if(meuTituloOmdb.year().length()>4){
+        throw new ErroConvertenderAnoExcepion("Não foi possivel converter o ano, ano  mais de 4 caracteres");
+    }
+
     this.anoDeLancamento=Integer.valueOf(meuTituloOmdb.year());
-    this.duracaoEmMinutos=Integer.valueOf(meuTituloOmdb.runtime().substring(0,2));
+    this.duracaoEmMinutos=Integer.valueOf(meuTituloOmdb.runtime().substring(0,3).replace(" ", ""));
 
     }
 
