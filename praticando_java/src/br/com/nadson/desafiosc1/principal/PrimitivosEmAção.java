@@ -1,4 +1,4 @@
-package br.com.nadson.desafiosc1.pricipal;
+package br.com.nadson.desafiosc1.principal;
 
 import br.com.nadson.desafiosc1.modelo.Notas;
 
