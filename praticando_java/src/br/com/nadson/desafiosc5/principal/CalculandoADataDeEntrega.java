@@ -3,6 +3,8 @@ package br.com.nadson.desafiosc5.principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class CalculandoADataDeEntrega {
@@ -12,11 +14,36 @@ public class CalculandoADataDeEntrega {
 
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            System.out.print("Informe a data inicial (dd/MM/yyyy): ");
-            LocalDate dataInicial = LocalDate.parse(entrada.nextLine(), formato);
+            LocalDate dataInicial = null;
 
-            System.out.print("Informe o prazo de entrega em dias úteis: ");
-            long diasDePrazo = entrada.nextLong();
+
+            while (dataInicial == null) {
+                System.out.print("Informe a data inicial (dd/MM/yyyy): ");
+                String input = entrada.nextLine();
+
+                try {
+                    dataInicial = LocalDate.parse(input, formato);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Data inválida! Use o formato dd/MM/yyyy.");
+                }
+            }
+
+            long diasDePrazo = -1;
+
+            while (diasDePrazo < 0) {
+                System.out.print("Informe o prazo de entrega em dias úteis (apenas números): ");
+
+                if (entrada.hasNextLong()) {
+                    diasDePrazo = entrada.nextLong();
+
+                    if (diasDePrazo < 0) {
+                        System.out.println("O prazo não pode ser negativo.");
+                    }
+                } else {
+                    System.out.println("Entrada inválida! Digite somente números.");
+                    entrada.next();
+                }
+            }
 
             LocalDate dataFinal = calcularDataUtil(dataInicial, diasDePrazo);
 
@@ -29,13 +56,13 @@ public class CalculandoADataDeEntrega {
         long diasContados = 0;
 
         while (diasContados < dias) {
-            data = data.plusDays(1);
+            data = data.plus(1, ChronoUnit.DAYS);
 
-            DayOfWeek diaDaSemana = data.getDayOfWeek();
+            DayOfWeek dia = data.getDayOfWeek();
 
             boolean diaUtil =
-                    diaDaSemana != DayOfWeek.SATURDAY &&
-                            diaDaSemana != DayOfWeek.SUNDAY;
+                    dia != DayOfWeek.SATURDAY &&
+                            dia != DayOfWeek.SUNDAY;
 
             if (diaUtil) {
                 diasContados++;
