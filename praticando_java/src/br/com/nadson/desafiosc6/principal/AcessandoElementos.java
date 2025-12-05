@@ -13,7 +13,7 @@ public class AcessandoElementos {
         nomes.add("Vitoria");
         nomes.add("Nadson");
 
-        System.out.println("Nome do indice 2: " + nomes.get());
+        System.out.println("Nome do indice 2: " + nomes.get(1));
         System.out.println("Total de nomes na lista: "+nomes.size());
     }
 
