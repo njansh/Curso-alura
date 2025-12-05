@@ -29,7 +29,7 @@ public class ControleDeExpediente {
             Duration diferenca = Duration.between(saidaPrevista, horaSaida);
 
             long horas = diferenca.toHours();
-            long minutos = Math.abs(diferenca.toMinutesPart());
+            long minutos = diferenca.toMinutesPart();
 
             String sinal;
             if (diferenca.isZero()) {
@@ -40,7 +40,7 @@ public class ControleDeExpediente {
                 sinal = "+ ";
             }
 
-            System.out.println("\nDiferença: " + sinal + Math.abs(horas) + "h " + minutos + "min");
+            System.out.println(sinal + horas + "h " + minutos + "min");
         }
     }
 }
