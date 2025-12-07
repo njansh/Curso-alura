@@ -15,7 +15,9 @@ public class Produto {
     public double getPreco() {
         return preco;
     }
-
+public double precoTotal() {
+        return preco * quantidade;
+    }
     public void imprimirRelatorio() {
         String rel = "Produto: " + nome + "\nPreço: " + String.format("R$ %.2f", preco) + "\nQuantidade: " + quantidade;
         System.out.println("-----------------------");
