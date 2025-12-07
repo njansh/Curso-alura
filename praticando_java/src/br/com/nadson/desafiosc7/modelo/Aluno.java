@@ -37,7 +37,7 @@ public class Aluno {
     public void exibirBoletim() {
         System.out.println("Aluno: " + nome);
         System.out.println("Notas: " + notas);
-        System.out.printf("Média: %.1f", getMedia());
+        System.out.printf("Média: %.1f%n", getMedia());
         System.out.println("Situação: " + situacao());
     }
 
