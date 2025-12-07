@@ -1,9 +1,9 @@
 package br.com.nadson.desafiosc8.modelo;
 
 public class Carro {
-	String modelo;
-	String placa;
-	int ano;
+private String modelo;
+private String placa;
+private int ano;
 	
 	public Carro(String modelo, String placa, int ano) {
 		this.modelo = modelo;
