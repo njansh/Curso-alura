@@ -1,18 +1,67 @@
-# Desafios C4 --- Validação e Entrada de Dados
+## 📘 Praticando Java – Strings e Regex
 
-Este módulo contém desafios focados em manipulação de entrada do usuário
-e validação utilizando **expressões regulares (Regex)**. Também envolve
-operações básicas com `Scanner`, lógica condicional e boas práticas de
-validação.
+**Pacote:** `desafiosc4`
+Este módulo reúne exercícios focados em manipulação de Strings e uso de expressões regulares para validação e processamento de textos.
 
-## Conteúdos abordados
+---
 
--   Uso de `Scanner` para entrada de dados
--   Validação de senhas com Regex
--   Estruturas condicionais
--   Boas práticas de validação de dados
+## 📚 Conteúdos trabalhados
 
-## Objetivo
+* Manipulação de Strings
+* Métodos fundamentais: `length()`, `substring()`, `replace()`, `toLowerCase()`, `toUpperCase()`, etc.
+* Expressões regulares (Regex)
+* Validação de padrões
+* Scanner + processamento textual
+* Lógica para filtrar, limpar e transformar dados
 
-Exercitar a capacidade de validar informações fornecidas pelo usuário e
-estruturar regras simples de autenticação e consistência.
+---
+
+## 📂 Estrutura do pacote
+
+```
+desafiosc4/
+ ├── principal/     → Classes executáveis (mains)
+ └── modelo/         → Lógica de negócio / validações
+```
+
+---
+
+## 📝 Desafios Desenvolvidos
+
+### ✔ Validador de Senhas com Regex
+
+* Leitura de uma senha via teclado
+* Verificação dos requisitos usando Regex:
+
+  * Mínimo uma letra maiúscula
+  * Mínimo uma letra minúscula
+  * Mínimo um número
+  * Mínimo um caractere especial
+* Exibição do resultado da validação
+
+### ✔ Manipulação e limpeza de Strings
+
+* Remoção de espaços extras
+* Ajustes de formato textual
+* Normalização de entrada do usuário
+
+---
+
+## ▶ Como executar
+
+Na pasta do projeto:
+
+```
+cd praticando_java/src/br/com/nadson/desafiosc4/principal
+java NomeDaClassePrincipal
+```
+
+---
+
+## 🧩 Objetivos do módulo
+
+* Construir segurança para lidar com dados textuais
+* Entender padrões usando expressões regulares
+* Preparar terreno para módulos futuros com validações mais avançadas
+
+---
