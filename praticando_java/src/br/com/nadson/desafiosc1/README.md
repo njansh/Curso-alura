@@ -1,4 +1,3 @@
----
 
 # Praticando Java — Encapsulamento
 
