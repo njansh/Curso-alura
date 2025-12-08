@@ -1,4 +1,4 @@
-\# Desafios C1 — Variáveis e Tipos
+# Desafios C1 — Variáveis e Tipos
 
 
 
