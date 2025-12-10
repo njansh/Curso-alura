@@ -1,8 +1,4 @@
----
-
-
-
-\# Praticando Java: Laços \*for\* e \*while\*
+# Praticando Java: Laços \*for\* e \*while\*
 
 
 

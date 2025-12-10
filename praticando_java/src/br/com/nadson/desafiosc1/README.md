@@ -1,150 +1,104 @@
-\# Desafios C1 — Variáveis e Tipos
 
+# Praticando Java — Encapsulamento
 
-
-Parte da formação \*\*Praticando Java (Alura)\*\*
-
-
-
-Este módulo reúne exercícios introdutórios do primeiro curso da formação, com foco no domínio de \*\*variáveis, tipos primitivos, entrada de dados e operadores básicos\*\* em Java.
-
-Os desafios aqui presentes têm como objetivo consolidar o uso correto de tipos numéricos, textos, conversões e operações simples.
-
-
+**Pacote:** `desafiosc8`
+Este módulo aprofunda o uso de **encapsulamento**, controle de acesso, validação interna de estado e construção de classes robustas com regras de negócio claras.
 
 ---
 
+## Conteúdos Trabalhados
 
+### Encapsulamento e Modificadores de Acesso
 
-\## Conteúdos abordados
+* Atributos privados para proteção do estado.
+* Métodos de acesso (`get`) e modificação (`set`) com validações.
+* Regras de negócio implementadas dentro das próprias classes.
+* Ocultação da complexidade interna.
 
+### Boas Práticas de Modelagem
 
+* Coesão e responsabilidade única.
+* Evitar estados inválidos.
+* Métodos que preservam a integridade dos dados.
+* Separação clara entre **modelo** e **execução**.
 
-\* Declaração e uso de variáveis
+### Enumerações (`enum`)
 
-\* Tipos primitivos (int, double, boolean, char)
-
-\* Strings e concatenação
-
-\* Operações aritméticas e precedência
-
-\* Conversões implícitas e explícitas (casting)
-
-\* Leitura de dados com `Scanner`
-
-\* Saída formatada com `System.out.printf`
-
-
-
----
-
-
-
-\## Estrutura do pacote
-
-
-
-```
-
-desafiosc1/
-
-&nbsp;├── modelo/
-
-&nbsp;│     (caso existam classes auxiliares)
-
-&nbsp;└── principal/
-
-&nbsp;      └── ...classes com método main
-
-```
-
-
-
-As classes dentro do pacote \*\*principal/\*\* representam os desafios individuais do curso. Cada arquivo contém um pequeno programa independente que demonstra o uso de variáveis e manipulação de tipos.
-
-
+* Representação de valores fixos: níveis, estados, categorias etc.
+* Mapeamento simples e seguro para regras de negócio.
 
 ---
 
+## Estrutura do Pacote
 
-
-\## Exemplos de desafios comuns deste módulo
-
-
-
-\* Conversão de temperatura (Celsius ↔ Fahrenheit)
-
-\* Cálculo simples com variáveis
-
-\* Formatação de números com duas casas decimais
-
-\* Captura de valores pelo teclado e exibição formatada
-
-\* Testes com diferentes tipos de variáveis e operadores
-
-
+```
+desafiosc8/
+ ├── modelo/        → classes encapsuladas e enums
+ └── principal/     → classes com métodos main para testes
+```
 
 ---
 
+## Desafios Desenvolvidos
 
+### 1. Controle de Bateria com Enum
 
-\## Como executar os exercícios
+* Classe `Bateria` com valor entre 0 e 100.
+* Métodos `carregar()` e `consumir()` com validação.
+* Enum `NivelCarga` definindo níveis: BAIXO, MÉDIO, ALTO.
+* Prevenção de valores inválidos.
 
+### 2. Conta Bancária
 
+* Classe `Conta` com saldo privado.
+* Métodos `depositar()` e `sacar()`.
+* Bloqueio de operações incorretas.
+* Exibição formatada do saldo.
 
-1\. Abra o projeto na sua IDE Java.
+### 3. Avaliação de Filmes
 
-2\. Navegue até:
+* Classe `Filme` com lista de notas.
+* Validação de notas (0 a 5).
+* Média automática.
+* Listas e operações com streams (quando aplicável).
 
+### 4. Sistema de Pontos para Alunos
 
+* Classe `Aluno` controlando pontos do aluno.
+* Ganho e perda de pontos com limite mínimo.
+* Exibição de status com regras internas.
 
-```
+### 5. Gerenciamento de Notas de Disciplina
 
-src/br/com/nadson/desafiosc1/principal/
-
-```
-
-
-
-3\. Escolha uma classe com `public static void main`.
-
-4\. Execute normalmente pela IDE ou via terminal:
-
-
-
-```
-
-java NomeDaClasse
-
-```
-
-
-
----
-
-
-
-\## Objetivo pedagógico
-
-
-
-Este módulo estabelece a base necessária para todos os outros cursos da formação. Aqui, você aprende:
-
-
-
-\* como o Java armazena dados;
-
-\* como realizar cálculos;
-
-\* como exibir e capturar informações;
-
-\* e como manipular diferentes tipos de valores.
-
-
-
-É a fundação para os desafios posteriores envolvendo condicionais, loops, coleções, orientação a objetos etc.
-
-
+* Classe `Disciplina` com notas válidas e inválidas.
+* Cálculo de média apenas das válidas.
+* Registro automático das notas inválidas.
+* Relatório completo da disciplina.
 
 ---
 
+## Como Executar
+
+1. Acesse:
+
+```
+praticando_java/src/br/com/nadson/desafiosc8/principal
+```
+
+2. Execute a classe que deseja testar:
+
+```
+java NomeDaClassePrincipal
+```
+
+---
+
+## Objetivos do Módulo
+
+* Criar classes seguras, evitando estados inválidos.
+* Praticar encapsulamento com regras internas.
+* Trabalhar enums como parte da modelagem.
+* Estruturar responsabilidades dentro das próprias classes.
+* Preparar base sólida para herança e polimorfismo (curso 9).
+
+---
