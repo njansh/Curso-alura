@@ -1,4 +1,5 @@
 package br.com.nadson.desafio1.modelo;
 
-public class ResultadoAvaliacao {
+public enum ResultadoAvaliacao {
+    REPROVADO,APROVADO,RECUPERACAO;
 }
