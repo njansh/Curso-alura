@@ -2,19 +2,26 @@ package br.com.nadson.desafio1.modelo;
 
 public class Avaliacao {
     private double nota;
-    private Diciplina diciplina;
-
-    public Avaliacao(double nota, Diciplina diciplina) {
-        this.nota = nota;
-        this.diciplina = diciplina;
+    private Disciplina disciplina;
+private int peso;
+public Avaliacao(double nota, Disciplina disciplina, int peso){
+    if (nota < 0 || nota > 10) {
+        throw new IllegalArgumentException("Nota inválida");
     }
-
-    public double getNota() {
-        return nota;
+    if (disciplina == null) {
+        throw new IllegalArgumentException("Disciplina inválida");
     }
-
-    public Diciplina getDiciplina() {
-        return diciplina;
+    if (peso <= 0) {
+        throw new IllegalArgumentException("Peso inválido");
     }
+    this.nota = nota;
+    this.disciplina = disciplina;
+    this.peso = peso;
 
+}
+
+
+    public Disciplina getDisciplina() {
+    return disciplina;
+    }
 }
