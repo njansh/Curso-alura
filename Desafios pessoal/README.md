@@ -1,6 +1,6 @@
 ```
 
-\# Desafios Pessoais — Java Back-end
+# Desafios Pessoais — Java Back-end
 
 
 
@@ -12,7 +12,7 @@ Os projetos aqui presentes foram pensados para simular cenários mais próximos 
 
 
 
-\## Objetivo desta Pasta
+## Objetivo desta Pasta
 
 
 
