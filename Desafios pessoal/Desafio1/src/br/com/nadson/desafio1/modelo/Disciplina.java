@@ -49,5 +49,11 @@ this.alunos=new ArrayList<>();
 
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+
+
 
 }

@@ -20,6 +20,13 @@ public Avaliacao(double nota, Disciplina disciplina, int peso){
 
 }
 
+    public double getNota() {
+        return nota;
+    }
+
+    public int getPeso() {
+        return peso;
+    }
 
     public Disciplina getDisciplina() {
     return disciplina;
