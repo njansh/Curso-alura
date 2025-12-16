@@ -53,6 +53,9 @@ this.alunos=new ArrayList<>();
         return nome;
     }
 
+    public Professor getProfessor() {
+        return professor;
+    }
 
 
 

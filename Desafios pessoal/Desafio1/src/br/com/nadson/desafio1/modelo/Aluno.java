@@ -44,7 +44,7 @@ public class Aluno extends Pessoa {
             throw new IllegalStateException("Aluno não está ativo");
         }
         if (!disciplinas.contains(avaliacao.getDisciplina())) {
-            throw new IllegalArgumentException("O aluno nao esta matriculado nessa diciplina");
+            throw new IllegalArgumentException("O aluno nao esta matriculado nessa disciplina");
         }
         if (avaliacoes.contains(avaliacao)) {
             throw new IllegalArgumentException("Avaliação já registrada");
@@ -58,7 +58,7 @@ public class Aluno extends Pessoa {
 
         }
         if (!disciplinas.contains(disciplina)) {
-            throw new IllegalArgumentException("O aluno nao esta matriculado nessa diciplina");
+            throw new IllegalArgumentException("O aluno nao esta matriculado nessa disciplina");
 
         }
         List<Avaliacao> avaliacoesDisciplina = avaliacoes.stream().

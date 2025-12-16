@@ -31,4 +31,13 @@ public Avaliacao(double nota, Disciplina disciplina, int peso){
     public Disciplina getDisciplina() {
     return disciplina;
     }
+
+    @Override
+    public String toString() {
+        return "Avaliacao{" +
+                "nota=" + nota +
+                ", disciplina=" + disciplina +
+                ", peso=" + peso +
+                '}';
+    }
 }

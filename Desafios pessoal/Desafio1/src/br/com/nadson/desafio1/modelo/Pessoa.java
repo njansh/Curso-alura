@@ -1,6 +1,6 @@
 package br.com.nadson.desafio1.modelo;
 
-public class Pessoa {
+public abstract class Pessoa {
     private String nome;
     private int idade;
 
