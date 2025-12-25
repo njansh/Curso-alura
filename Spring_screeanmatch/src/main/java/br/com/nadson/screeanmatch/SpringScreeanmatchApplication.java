@@ -1,6 +1,6 @@
 package br.com.nadson.screeanmatch;
 
-import br.com.nadson.screeanmatch.model.DadosEpsodio;
+import br.com.nadson.screeanmatch.model.DadosEpisodio;
 import br.com.nadson.screeanmatch.model.DadosSerie;
 import br.com.nadson.screeanmatch.service.ConsumoApi;
 import br.com.nadson.screeanmatch.service.ConverterDados;
@@ -29,7 +29,7 @@ public class SpringScreeanmatchApplication implements CommandLineRunner {
 		System.out.println(dados);
 
 		json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=1&episode=1");
-		DadosEpsodio dadosEpsodio = conversor.obterDados(json, DadosEpsodio.class);
-		System.out.println(dadosEpsodio);
+		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
+		System.out.println(dadosEpisodio);
 	}
 }
