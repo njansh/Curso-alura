@@ -1,4 +1,4 @@
-package br.com.nadson.avaliacao;
+package br.com.nadson.avaliacao.model;
 
 import java.util.List;
 
