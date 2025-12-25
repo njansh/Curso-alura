@@ -1,0 +1,42 @@
+[
+  {
+    "Nome": "Matrix",
+    "AnoDeLancamento": 1993,
+    "SomaDasAvaliacoes": 0.0,
+    "IncluidoNoPlano": false,
+    "TotalDeAvaliacoes": 0,
+    "DuracaoEmMinutos": 60
+  },
+  {
+    "Nome": "Dogville",
+    "AnoDeLancamento": 2003,
+    "SomaDasAvaliacoes": 0.0,
+    "IncluidoNoPlano": false,
+    "TotalDeAvaliacoes": 0,
+    "DuracaoEmMinutos": 171
+  },
+  {
+    "Nome": "The Italian Job",
+    "AnoDeLancamento": 2003,
+    "SomaDasAvaliacoes": 0.0,
+    "IncluidoNoPlano": false,
+    "TotalDeAvaliacoes": 0,
+    "DuracaoEmMinutos": 111
+  },
+  {
+    "Nome": "Up",
+    "AnoDeLancamento": 2009,
+    "SomaDasAvaliacoes": 0.0,
+    "IncluidoNoPlano": false,
+    "TotalDeAvaliacoes": 0,
+    "DuracaoEmMinutos": 96
+  },
+  {
+    "Nome": "Geschundenes Zelluloid - Das Schicksal des Kinoklassikers \u0027Im Westen nichts Neues\u0027",
+    "AnoDeLancamento": 1984,
+    "SomaDasAvaliacoes": 0.0,
+    "IncluidoNoPlano": false,
+    "TotalDeAvaliacoes": 0,
+    "DuracaoEmMinutos": 33
+  }
+]
