@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @SpringBootApplication
 public class SpringScreeanmatchApplication implements CommandLineRunner {
 
@@ -36,7 +38,20 @@ public class SpringScreeanmatchApplication implements CommandLineRunner {
 		System.out.println("buscando uma temporada completa");
 		json=consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=1");
 		DadosTemporada dadosTemporada=conversor.obterDados(json,DadosTemporada.class);
-		System.out.println(dadosTemporada);
+ 		List<DadosEpisodio> episodiosComTemporada =
+				dadosTemporada.episodios().stream()
+						.map(e -> new DadosEpisodio(
+								e.titulo(),
+								dadosTemporada.numero(),
+								e.numero(),
+								e.imdbRating(),
+								e.dataLancamento()
+						))
+						.toList();
+
+		System.out.println(episodiosComTemporada);
+
+
 
 	}
 }
