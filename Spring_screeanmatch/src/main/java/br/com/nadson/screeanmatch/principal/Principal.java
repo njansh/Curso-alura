@@ -63,8 +63,9 @@ public class Principal {
 
     private void mostrarDadosSerie() {
         System.out.println(dadosSerie);
-        List<DadosTemporada> temporadas = obterTodasTemporadas();
-        temporadas.forEach(System.out::println);
+for (int i=1;i<=dadosSerie.totalTemporadas();i++){
+    mostrarDadosTemporadaEspecifica(i);
+}
     }
 
     private void mostrarDadosTemporadaEspecifica(int temporada) {
@@ -80,33 +81,10 @@ public class Principal {
                             e.imdbRating(),
                             e.dataLancamento()
                     ))
-                    .forEach(e -> System.out.println("  " + e.numero() + ". " + e.titulo()));
+                    .forEach(e -> System.out.println("  " + e.numero() + ". " + e.titulo()+ "  nota: "+e.imdbRating()+" "));
         } else {
             System.out.println("Temporada não encontrada ou sem episódios.");
         }
-    }
-
-    private List<DadosTemporada> obterTodasTemporadas() {
-        List<DadosTemporada> temporadas = new ArrayList<>();
-        for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
-            String json = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + "&season=" + i);
-            DadosTemporada dadosDaTemporada = conversor.obterDados(json, DadosTemporada.class);
-            List<DadosEpisodio> episodiosComTemporada =
-                    dadosDaTemporada.episodios().stream()
-                            .map(e -> new DadosEpisodio(
-                                    e.titulo(),
-                                    dadosDaTemporada.numero(),
-                                    e.numero(),
-                                    e.imdbRating(),
-                                    e.dataLancamento()
-                            ))
-                            .collect(Collectors.toList());
-
-            temporadas.add(
-                    new DadosTemporada(dadosDaTemporada.numero(), episodiosComTemporada)
-            );
-        }
-        return temporadas;
     }
 
     private String escolherSerie(String serie) {

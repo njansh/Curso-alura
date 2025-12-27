@@ -3,6 +3,7 @@ package br.com.nadson.screeanmatch;
 import br.com.nadson.screeanmatch.model.DadosEpisodio;
 import br.com.nadson.screeanmatch.model.DadosSerie;
 import br.com.nadson.screeanmatch.model.DadosTemporada;
+import br.com.nadson.screeanmatch.principal.Principal;
 import br.com.nadson.screeanmatch.service.ConsumoApi;
 import br.com.nadson.screeanmatch.service.ConverterDados;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class SpringScreeanmatchApplication implements CommandLineRunner {
-
+@Autowired
+private Principal principal;
 	@Autowired
 	private ConsumoApi consumoApi;
 	@Autowired
@@ -73,6 +75,10 @@ public class SpringScreeanmatchApplication implements CommandLineRunner {
 			);
 		}
 
-		System.out.println(temporadas);
+		temporadas.stream().forEach(System.out::println);
+
+
+		System.out.println("-------------------------------------");
+		principal.exibirMenu();
 	}
 }
