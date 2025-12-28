@@ -8,7 +8,7 @@ public class MediaNumerosLambda {
         List<Integer> numeros = Arrays.asList(1, 2, 3, 4, 5);
 
         double media = numeros.stream()
-                .mapToInt(n -> n) 
+                .mapToInt(n -> n)
                 .average()
                 .orElse(0.0);
 
