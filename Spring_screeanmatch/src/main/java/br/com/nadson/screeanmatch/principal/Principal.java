@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 @Service
 public class Principal {
@@ -22,6 +23,9 @@ public class Principal {
     private String nomeSerie;
     private DadosSerie dadosSerie;
     private int numeroDaTemporada;
+    private List<DadosEpisodio> umaTemporada;
+    private Consumer<DadosEpisodio> exibirEp = e -> System.out.println("  " + e.numero() + ". " + e.titulo() + "  nota: " + e.imdbRating() + " ");
+
 
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
 
@@ -63,9 +67,10 @@ public class Principal {
 
     private void mostrarDadosSerie() {
         System.out.println(dadosSerie);
-for (int i=1;i<=dadosSerie.totalTemporadas();i++){
-    mostrarDadosTemporadaEspecifica(i);
-}
+        for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
+            mostrarDadosTemporadaEspecifica(i);
+
+        }
     }
 
     private void mostrarDadosTemporadaEspecifica(int temporada) {
@@ -73,15 +78,15 @@ for (int i=1;i<=dadosSerie.totalTemporadas();i++){
         DadosTemporada dadosDaTemporada = conversor.obterDados(json, DadosTemporada.class);
         if (dadosDaTemporada != null && dadosDaTemporada.episodios() != null) {
             System.out.println("Temporada " + dadosDaTemporada.numero() + ":");
-            dadosDaTemporada.episodios().stream()
+           umaTemporada = dadosDaTemporada.episodios().stream()
                     .map(e -> new DadosEpisodio(
                             e.titulo(),
                             dadosDaTemporada.numero(),
                             e.numero(),
                             e.imdbRating(),
                             e.dataLancamento()
-                    ))
-                    .forEach(e -> System.out.println("  " + e.numero() + ". " + e.titulo()+ "  nota: "+e.imdbRating()+" "));
+                    )).collect(Collectors.toUnmodifiableList());
+            umaTemporada.forEach(exibirEp);
         } else {
             System.out.println("Temporada não encontrada ou sem episódios.");
         }
