@@ -3,6 +3,7 @@ package br.com.nadson.screeanmatch.principal;
 import br.com.nadson.screeanmatch.model.DadosEpisodio;
 import br.com.nadson.screeanmatch.model.DadosSerie;
 import br.com.nadson.screeanmatch.model.DadosTemporada;
+import br.com.nadson.screeanmatch.model.Episodio;
 import br.com.nadson.screeanmatch.service.ConsumoApi;
 import br.com.nadson.screeanmatch.service.ConverterDados;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,16 @@ public class Principal {
     private String nomeSerie;
     private DadosSerie dadosSerie;
     private int numeroDaTemporada;
-    private List<DadosEpisodio> umaTemporada;
-    private Consumer<DadosEpisodio> exibirEp = e -> System.out.println("  " + e.numero() + ". " + e.titulo() + "  nota: " + e.imdbRating() + " ");
-
+    private List<Episodio> episodios;
+    private Consumer<Episodio> exibirEp = e ->
+            System.out.printf("Temporada %-2d | Ep: %-2d | Nota: %-3.1f | %-30s\n",
+                    e.getTemporada(), e.getNumero(), e.getAvaliacao(), e.getNome());
 
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
 
     public Principal(){
         this.entrada=new Scanner(System.in);
+        this.episodios = new ArrayList<>();
     }
     public void exibirMenu(){
         while(true){
@@ -52,7 +55,18 @@ public class Principal {
             System.out.println("Voce quer ver a serie como um todo ou por temporada? (serie/temporada)");
             String escolha= entrada.nextLine();
             if (escolha.equalsIgnoreCase("serie")) {
+                System.out.println("Exibindo a série completa:");
                 mostrarDadosSerie();
+                System.out.println("Você quer ver o top 5? (sim/não)");
+                String top5Choice = entrada.nextLine();
+                if (top5Choice.equalsIgnoreCase("sim")) {
+                    System.out.println("Top 5 episódios:");
+                    System.out.println("\n--- TOP 5 EPISÓDIOS ---");
+                    episodios.stream()
+                            .sorted(java.util.Comparator.comparing(Episodio::getAvaliacao).reversed())
+                            .limit(5)
+                            .forEach(exibirEp);
+                }
             } else if (escolha.equalsIgnoreCase("temporada")) {
                 System.out.println("Digite o número da temporada:");
                 numeroDaTemporada = entrada.nextInt();
@@ -67,10 +81,20 @@ public class Principal {
 
     private void mostrarDadosSerie() {
         System.out.println(dadosSerie);
+        List<DadosTemporada> temporadas = new java.util.ArrayList<>();
         for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
-            mostrarDadosTemporadaEspecifica(i);
-
+            String json = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + "&season=" + i);
+            DadosTemporada dadosDaTemporada = conversor.obterDados(json, DadosTemporada.class);
+            temporadas.add(dadosDaTemporada);
         }
+
+        episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(e -> new Episodio(e, t.numero())))
+                .collect(Collectors.toList());
+
+        episodios.forEach(exibirEp);
+
     }
 
     private void mostrarDadosTemporadaEspecifica(int temporada) {
@@ -78,15 +102,12 @@ public class Principal {
         DadosTemporada dadosDaTemporada = conversor.obterDados(json, DadosTemporada.class);
         if (dadosDaTemporada != null && dadosDaTemporada.episodios() != null) {
             System.out.println("Temporada " + dadosDaTemporada.numero() + ":");
-           umaTemporada = dadosDaTemporada.episodios().stream()
-                    .map(e -> new DadosEpisodio(
-                            e.titulo(),
-                            dadosDaTemporada.numero(),
-                            e.numero(),
-                            e.imdbRating(),
-                            e.dataLancamento()
-                    )).collect(Collectors.toUnmodifiableList());
-            umaTemporada.forEach(exibirEp);
+            episodios = dadosDaTemporada.episodios().stream()
+                    .map(e -> new Episodio(e, dadosDaTemporada.numero()))
+                    .collect(Collectors.toList());
+
+
+            episodios.forEach(exibirEp);
         } else {
             System.out.println("Temporada não encontrada ou sem episódios.");
         }
