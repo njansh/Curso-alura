@@ -1,6 +1,6 @@
-package br.com.nadson.desafioslambdastream;
+package br.com.nadson.desafioslambdastream.m1;
 
-import br.com.nadson.desafioslambdastream.interfaces.Calculadora;
+import br.com.nadson.desafioslambdastream.m1.interfaces.Calculadora;
 
 public class CalculadoraLambda {
     public static void main(String[] args) {

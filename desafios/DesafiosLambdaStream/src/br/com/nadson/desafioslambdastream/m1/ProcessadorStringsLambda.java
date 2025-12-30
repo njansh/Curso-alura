@@ -1,10 +1,9 @@
-package br.com.nadson.desafioslambdastream;
+package br.com.nadson.desafioslambdastream.m1;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class ProcessadorStringsLambda {
     public static void main(String[] args) {

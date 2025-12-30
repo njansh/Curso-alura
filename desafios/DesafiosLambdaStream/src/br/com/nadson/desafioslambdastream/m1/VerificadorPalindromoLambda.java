@@ -1,4 +1,6 @@
-package br.com.nadson.desafioslambdastream;
+package br.com.nadson.desafioslambdastream.m1;
+
+import br.com.nadson.desafioslambdastream.m1.interfaces.VerificadorPalindromo;
 
 public class VerificadorPalindromoLambda {
     public static void main(String[] args) {
