@@ -64,7 +64,8 @@ public class Principal {
                 System.out.println("2 - Exibir Top 5 episódios");
                 System.out.println("3 - Filtrar episódios por ano");
                 System.out.println("4 - Buscar episódios de uma temporada específica");
-                System.out.println("5 - Buscar outra série");
+                System.out.println("5 - Buscar um episódio pelo nome");
+                System.out.println("6 - Buscar outra série");
 
                 var opcao = entrada.nextInt();
                 entrada.nextLine(); // Limpa buffer
@@ -74,7 +75,8 @@ public class Principal {
                     case 2 -> exibirTop5();
                     case 3 -> filtrarPorAno();
                     case 4 -> buscarTemporadaEspecifica();
-                    case 5 -> manterNaSerie = false;
+                    case 5 -> escolher1Ep();
+                    case 6 -> manterNaSerie = false;
                     default -> System.out.println("Opção inválida.");
                 }
             }
@@ -136,7 +138,38 @@ public class Principal {
             filtrados.forEach(exibirEp);
         }
     }
+public void escolher1Ep(){
+    System.out.println("Diga o nome do Episodio: ");
+    String nome = entrada.nextLine();
+episodios.stream()
+        .filter(e -> {
+            String[] palavrasNomeEpisodio = e.getNome().toLowerCase().split("\\s+");
+            String[] palavrasBusca = nome.toLowerCase().split("\\s+");
+            for (String palavraBusca : palavrasBusca) {
+                if (palavraBusca.length() > 3) { // Aplica a limitação de 3 letras
+                    for (String palavraEpisodio : palavrasNomeEpisodio) {
+                        if (palavraEpisodio.contains(palavraBusca)) {
+                            return true;
+                        }
+                    }
+                } else { // Se a palavra de busca tiver 3 letras ou menos, busca exata
+                    for (String palavraEpisodio : palavrasNomeEpisodio) {
+                        if (palavraEpisodio.equals(palavraBusca)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        })
+        .findFirst()
+        .ifPresentOrElse(
+                ep -> System.out.printf("Episódio encontrado: Temporada %-2d | Ep: %-2d | Nota: %-3.1f | %-30s\n",
+                        ep.getTemporada(), ep.getNumero(), ep.getAvaliacao(), ep.getNome()),
+                () -> System.out.println("Episódio não encontrado.")
+        );
 
+}
     private String escolherSerie(String serie) {
         return consumoApi.obterDados(ENDERECO + serie.replace(" ", "+"));
     }
