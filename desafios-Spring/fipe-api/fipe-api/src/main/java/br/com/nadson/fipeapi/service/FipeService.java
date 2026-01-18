@@ -33,7 +33,7 @@ public class FipeService {
                 this.tipoVeiculo = "caminhoes";
                 break;
             default:
-                this.tipoVeiculo = "carros"; // Default to cars if invalid input
+                this.tipoVeiculo = "carros";
                 break;
         }
     }
@@ -60,11 +60,11 @@ public class FipeService {
 
     }
 
-    public ValorVeiculo listarValorVeiculo(String codigoMarca, String codigoModelo, String codigoAno) {
+    public Veiculo listarValorVeiculo(String codigoMarca, String codigoModelo, String codigoAno) {
         String url = BASE_URL + tipoVeiculo + "/marcas/" + codigoMarca
                 + "/modelos/" + codigoModelo + "/anos/" + codigoAno;
         String json = apiConsumer.obterDados(url);
-        return dataConverter.convertFromJson(json, ValorVeiculo.class); // <- aqui não é lista
+        return dataConverter.convertFromJson(json, Veiculo.class);
     }
 
 

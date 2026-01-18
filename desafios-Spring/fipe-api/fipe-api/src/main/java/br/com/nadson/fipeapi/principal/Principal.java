@@ -60,12 +60,12 @@ public class Principal implements CommandLineRunner {
                 System.out.println("0 - Sair");
                 System.out.print("Escolha o tipo de veículo: ");
                 int tipo = sc.nextInt();
-                sc.nextLine(); // Limpa buffer
+                sc.nextLine();
                 if (tipo >= 0 && tipo <= 3) return tipo;
                 System.out.println("Opção inválida, tente novamente.");
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida, digite um número.");
-                sc.nextLine(); // Limpa buffer
+                sc.nextLine();
             }
         }
     }
@@ -124,7 +124,7 @@ public class Principal implements CommandLineRunner {
 
         if (opcao == 1) {
             for (Ano ano : anos) {
-                ValorVeiculo valor = fipeService.listarValorVeiculo(codigoMarca, codigoModelo, ano.codigo());
+                Veiculo valor = fipeService.listarValorVeiculo(codigoMarca, codigoModelo, ano.codigo());
                 if (valor != null) {
                     System.out.println("Ano: " + ano.nome() + " | Modelo: " + valor.modelo() + " | Preço: " + valor.valor());
                 } else {
@@ -136,7 +136,7 @@ public class Principal implements CommandLineRunner {
                 System.out.print("Digite o código do ano para consultar o preço: ");
                 String codigoAno = sc.nextLine();
                 if (anos.stream().anyMatch(a -> a.codigo().equals(codigoAno))) {
-                    ValorVeiculo valor = fipeService.listarValorVeiculo(codigoMarca, codigoModelo, codigoAno);
+                    Veiculo valor = fipeService.listarValorVeiculo(codigoMarca, codigoModelo, codigoAno);
                     if (valor != null) {
                         System.out.println("\n--- Detalhes do Veículo ---");
                         System.out.println("Valor: " + valor.valor());
