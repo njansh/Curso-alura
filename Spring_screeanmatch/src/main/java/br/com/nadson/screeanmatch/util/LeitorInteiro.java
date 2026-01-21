@@ -18,6 +18,9 @@ public class LeitorInteiro {
         }
 
     }
+
+
+
     public static int ler(String mensagem, Scanner scanner, int min, int max) {
         while (true) {
             System.out.println(mensagem);
