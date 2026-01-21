@@ -3,6 +3,7 @@ package br.com.nadson.screeanmatch.principal;
 import br.com.nadson.screeanmatch.model.DadosSerie;
 import br.com.nadson.screeanmatch.model.DadosTemporada;
 import br.com.nadson.screeanmatch.model.Episodio;
+import br.com.nadson.screeanmatch.model.Serie;
 import br.com.nadson.screeanmatch.service.ConsumoApi;
 import br.com.nadson.screeanmatch.service.ConverterDados;
 import br.com.nadson.screeanmatch.util.LeitorInteiro;
@@ -15,72 +16,137 @@ import java.util.stream.Collectors;
 
 @Service
 public class Principal {
-
     @Autowired
     private ConsumoApi consumoApi;
     @Autowired
     private ConverterDados conversor;
 
     private final Scanner entrada = new Scanner(System.in);
-    private List<Episodio> episodios = new ArrayList<>();
-    private DadosSerie dadosSerie;
+    private final List<Serie> series = new ArrayList<>();
+    private Serie serieAtual;
     private String nomeSerie;
 
     private static final String ENDERECO = "https://www.omdbapi.com/?t=";
 
-    /* ========================= MENU ========================= */
-
     public void exibirMenu() {
         while (true) {
             System.out.println("\n--- BUSCA DE SÉRIES ---");
-            System.out.println("Digite o nome da série (ou 'sair'):");
-            nomeSerie = entrada.nextLine();
 
-            if (nomeSerie.equalsIgnoreCase("sair")) break;
+            int num = LeitorInteiro.ler("""
+                    1 - Buscar série
+                    2 - Listar séries
+                    3 - Sair
+                    """, entrada, 1, 3);
 
-            if (!carregarSerie()) continue;
-
-            boolean manterNaSerie = true;
-            while (manterNaSerie) {
-                System.out.println("\nMenu para: " + dadosSerie.titulo());
-                System.out.println("1 - Exibir todos os episódios");
-                System.out.println("2 - Exibir Top 5 episódios");
-                System.out.println("3 - Filtrar episódios por ano");
-                System.out.println("4 - Buscar episódios de uma temporada");
-                System.out.println("5 - Buscar um episódio pelo nome");
-                System.out.println("6 - Buscar outra série");
-
-                int opcao = LeitorInteiro.ler("Escolha uma opção:", entrada, 1, 6);
-
-                switch (opcao) {
-                    case 1 -> exibirSerieCompleta();
-                    case 2 -> exibirTop5();
-                    case 3 -> filtrarPorAno();
-                    case 4 -> buscarTemporadaEspecifica();
-                    case 5 -> escolher1Ep();
-                    case 6 -> manterNaSerie = false;
-                    default -> System.out.println("Opção inválida.");
+            switch (num) {
+                case 1 -> buscarSerie();
+                case 2 -> listarSeries();
+                case 3 -> {
+                    return;
                 }
+                default -> System.out.println("Opção inválida.");
             }
         }
     }
 
-    /* ========================= CARREGAMENTO ========================= */
+    private void buscarSerie() {
+        System.out.println("Diga o nome da serie: ");
+        String nome = entrada.nextLine();
+        if (nome != null && !nome.isBlank()) {
+            nomeSerie = nome;
+            if (carregarSerie()) {
+                if (series.stream().noneMatch(s -> s.getDadosSerie().titulo().equalsIgnoreCase(serieAtual.getDadosSerie().titulo()))) {
+                    series.add(serieAtual);
+                    menuSerieEspecifica();
+                }
+                System.out.println("\nSérie '" + serieAtual.getDadosSerie().titulo() + "' adicionada com sucesso!");
+            }
+        } else {
+            System.out.println("Nome da série não pode ser vazio.");
+        }
+    }
+
+    private void listarSeries() {
+        if (series.isEmpty()) {
+            System.out.println("Nenhuma série encontrada.");
+            return;
+        }
+
+        List<Serie> ordenadas = series.stream()
+                .sorted(Comparator.comparing(s -> s.getDadosSerie().titulo(), String.CASE_INSENSITIVE_ORDER))
+                .toList();
+
+        System.out.println("\n--- SÉRIES CADASTRADAS ---");
+        for (int i = 0; i < ordenadas.size(); i++) {
+            System.out.printf("%d - %s%n", i + 1, ordenadas.get(i).getDadosSerie().titulo());
+        }
+
+        int escolha = LeitorInteiro.ler(
+                "\nDigite o número da série para acessar o menu específico (ou 0 para voltar):",
+                entrada,
+                0,
+                ordenadas.size()
+        );
+    if(escolha > 0){
+        serieAtual = ordenadas.get(escolha - 1);
+        menuSerieEspecifica();
+    }
+    }
+
+    public void menuSerieEspecifica() {
+        boolean manterNaSerie = true;
+        while (manterNaSerie) {
+            System.out.println("\nMenu para: " + serieAtual.getDadosSerie().titulo());
+            System.out.println("1 - Exibir todos os episódios");
+            System.out.println("2 - Exibir Top 5 episódios");
+            System.out.println("3 - Filtrar episódios por ano");
+            System.out.println("4 - Buscar episódios de uma temporada");
+            System.out.println("5 - Buscar um episódio pelo nome");
+            System.out.println("6 - Exibir detalhes da série");
+            System.out.println("7 - Voltar ao menu principal");
+
+
+            int opcao = LeitorInteiro.ler("Escolha uma opção:", entrada, 1, 7);
+
+            switch (opcao) {
+                case 1 -> exibirSerieCompleta();
+                case 2 -> exibirTop5();
+                case 3 -> filtrarPorAno();
+                case 4 -> buscarTemporadaEspecifica();
+                case 5 -> escolher1Ep();
+                case 6 -> exibirDetalhesSerie();
+                case 7 -> manterNaSerie = false;
+                default -> System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+    private void exibirDetalhesSerie() {
+        System.out.println("\n--- DETALHES DA SÉRIE ---");
+        System.out.println("Título: " + serieAtual.getDadosSerie().titulo());
+        System.out.println("Ano de Lançamento: " + serieAtual.getDadosSerie().ano());
+        System.out.println("Total de Temporadas: " + serieAtual.getDadosSerie().totalTemporadas());
+        System.out.println("Avaliação (IMDB): " + serieAtual.getDadosSerie().avaliacao());
+        System.out.println("Total de Episódios: " + serieAtual.getEpisodios().size());
+        DoubleSummaryStatistics est = estatisticas(serieAtual.getEpisodios(), e -> true);
+        System.out.printf("Média de Avaliação dos Episódios: %.2f%n", est.getAverage());
+    }
 
     private boolean carregarSerie() {
         String jsonSerie = consumoApi.obterDados(ENDERECO + nomeSerie.replace(" ", "+"));
-        dadosSerie = conversor.obterDados(jsonSerie, DadosSerie.class);
+        DadosSerie dados = conversor.obterDados(jsonSerie, DadosSerie.class);
 
-        if (dadosSerie == null || dadosSerie.titulo() == null || dadosSerie.totalTemporadas() == null) {
+        if (dados == null || dados.titulo() == null || dados.totalTemporadas() == null) {
             System.out.println("\n[!] Série não encontrada. Tente novamente.");
             return false;
         }
 
-        carregarTodasAsTemporadas();
+        List<Episodio> episodiosCarregados = carregarTodasAsTemporadas(dados);
+        serieAtual = new Serie(dados, episodiosCarregados);
         return true;
     }
 
-    private void carregarTodasAsTemporadas() {
+    private List<Episodio> carregarTodasAsTemporadas(DadosSerie dadosSerie) {
         List<DadosTemporada> temporadas = new ArrayList<>();
 
         for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
@@ -89,27 +155,25 @@ public class Principal {
             temporadas.add(conversor.obterDados(json, DadosTemporada.class));
         }
 
-        episodios = temporadas.stream()
+        return temporadas.stream()
                 .flatMap(t -> t.episodios().stream()
                         .map(e -> new Episodio(e, t.numero())))
                 .collect(Collectors.toList());
     }
 
-    /* ========================= EXIBIÇÃO ========================= */
-
     private void exibirSerieCompleta() {
         System.out.println("\n--- EPISÓDIOS DA SÉRIE ---");
 
-        var est = estatisticas(episodios, e -> true);
+        var est = estatisticas(serieAtual.getEpisodios(), e -> true);
         System.out.printf("Média de nota: %.2f%n", est.getAverage());
 
-        episodios.forEach(this::imprimirEpisodio);
+        serieAtual.getEpisodios().forEach(this::imprimirEpisodio);
     }
 
     private void exibirTop5() {
         System.out.println("\n--- TOP 5 EPISÓDIOS ---");
 
-        episodios.stream()
+        serieAtual.getEpisodios().stream()
                 .filter(avaliacaoValida())
                 .sorted(Comparator.comparing(Episodio::getAvaliacao).reversed())
                 .limit(5)
@@ -117,32 +181,31 @@ public class Principal {
     }
 
     private void buscarTemporadaEspecifica() {
-        int num = LeitorInteiro.ler("Digite o número da temporada:",entrada);
+        int num = LeitorInteiro.ler(
+                "Digite o número da temporada:",
+                entrada,
+                1,
+                serieAtual.getDadosSerie().totalTemporadas()
+        );
 
-
-        if (num < 1 || num > dadosSerie.totalTemporadas()) {
-            System.out.println("Temporada inválida. Esta série possui " + dadosSerie.totalTemporadas() + " temporadas.");
-            return;
-        }
-
-        var est = estatisticas(episodios, e -> e.getTemporada() == num);
+        var est = estatisticas(serieAtual.getEpisodios(), e -> e.getTemporada() == num);
         System.out.printf("Média da Temporada %d: %.2f%n", num, est.getAverage());
 
-        episodios.stream()
+        serieAtual.getEpisodios().stream()
                 .filter(daTemporada(num))
                 .forEach(this::imprimirEpisodio);
     }
 
     private void filtrarPorAno() {
-        int ano = LeitorInteiro.ler("A partir de que ano?",entrada);
+        int ano = LeitorInteiro.ler("A partir de que ano?", entrada);
 
-        List<Episodio> filtrados = episodios.stream()
+        List<Episodio> filtrados = serieAtual.getEpisodios().stream()
                 .filter(e -> e.getDataLancamento() != null &&
                         e.getDataLancamento().getYear() >= ano)
                 .collect(Collectors.toList());
 
         if (filtrados.isEmpty()) {
-            episodios.stream()
+            serieAtual.getEpisodios().stream()
                     .filter(e -> e.getDataLancamento() != null)
                     .max(Comparator.comparing(Episodio::getDataLancamento))
                     .ifPresentOrElse(
@@ -160,7 +223,7 @@ public class Principal {
         String busca = entrada.nextLine().toLowerCase();
         String[] palavras = busca.split("\\s+");
 
-        episodios.stream()
+        serieAtual.getEpisodios().stream()
                 .filter(e -> nomeContemTodasAsPalavras(e, palavras))
                 .findFirst()
                 .ifPresentOrElse(
@@ -168,8 +231,6 @@ public class Principal {
                         () -> System.out.println("Episódio não encontrado.")
                 );
     }
-
-    /* ========================= UTILITÁRIOS ========================= */
 
     private DoubleSummaryStatistics estatisticas(
             List<Episodio> lista, Predicate<Episodio> filtro) {
@@ -209,5 +270,3 @@ public class Principal {
                 e.getAvaliacao(), e.getNome());
     }
 }
-
-
