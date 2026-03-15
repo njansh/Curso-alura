@@ -1,6 +1,7 @@
 package br.com.nadson.screeanmatch.model;
 
 import br.com.nadson.screeanmatch.enums.Categoria;
+import br.com.nadson.screeanmatch.service.Tradutor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,19 +19,33 @@ public class Serie {
     private String poster;
     private final DadosSerie dadosSerie;
     private final List<Episodio> episodios;
+    private static final Tradutor tradutor = new Tradutor();
+
 
     public Serie(DadosSerie dadosSerie, List<Episodio> episodios) {
         this.dadosSerie = dadosSerie;
+
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
-        this.avaliacao = OptionalDouble.of(Double.parseDouble(dadosSerie.avaliacao())).orElse(0.0);
+
+        this.avaliacao = dadosSerie.avaliacao().equalsIgnoreCase("N/A")
+                ? 0.0
+                : Double.parseDouble(dadosSerie.avaliacao());
+
         this.genero = Categoria.fromString(dadosSerie.genero());
         this.atores = dadosSerie.atores();
-        this.sinopse = dadosSerie.sinopse();
         this.poster = dadosSerie.poster();
-        this.episodios = episodios == null ? new ArrayList<>() : new ArrayList<>(episodios);
-    }
 
+        if (dadosSerie.sinopse() != null && !dadosSerie.sinopse().isBlank()) {
+            this.sinopse = tradutor.traduzir(dadosSerie.sinopse()).trim();
+        } else {
+            this.sinopse = "Sinopse não disponível";
+        }
+
+        this.episodios = episodios == null
+                ? new ArrayList<>()
+                : new ArrayList<>(episodios);
+    }
     public String getTitulo() {
         return titulo;
     }
