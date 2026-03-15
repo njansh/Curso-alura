@@ -1,5 +1,6 @@
 package br.com.nadson.screeanmatch.principal;
 
+import br.com.nadson.screeanmatch.enums.Categoria;
 import br.com.nadson.screeanmatch.model.DadosSerie;
 import br.com.nadson.screeanmatch.model.DadosTemporada;
 import br.com.nadson.screeanmatch.model.Episodio;
@@ -35,34 +36,78 @@ public class Principal {
             int num = LeitorInteiro.ler("""
                     1 - Buscar série
                     2 - Listar séries
-                    3 - Sair
-                    """, entrada, 1, 3);
+                    3 - Buscar por categoria
+                    4 - Buscar várias séries
+                    5 - Sair
+                    """, entrada, 1, 5);
 
             switch (num) {
                 case 1 -> buscarSerie();
                 case 2 -> listarSeries();
-                case 3 -> {
+                case 3 -> buscarSeriePorCategoria();
+                case 4 -> buscarVariasSeries();
+                case 5 -> {
                     return;
                 }
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
-
     private void buscarSerie() {
         System.out.println("Diga o nome da serie: ");
         String nome = entrada.nextLine();
+        buscarSeriePorNome(nome);
+        if (serieAtual != null && serieAtual.getTitulo().equalsIgnoreCase(nomeSerie)) {
+            menuSerieEspecifica();
+        }
+    }
+
+    private void buscarSeriePorNome(String nome) {
         if (nome != null && !nome.isBlank()) {
             nomeSerie = nome;
             if (carregarSerie()) {
-                if (series.stream().noneMatch(s -> s.getDadosSerie().titulo().equalsIgnoreCase(serieAtual.getDadosSerie().titulo()))) {
+                if (series.stream().noneMatch(s -> s.getTitulo().equalsIgnoreCase(serieAtual.getTitulo()))) {
                     series.add(serieAtual);
-                    menuSerieEspecifica();
+                    System.out.println("\nSérie '" + serieAtual.getTitulo() + "' adicionada com sucesso!");
+                } else {
+                    System.out.println("\nA série '" + serieAtual.getTitulo() + "' já está na lista.");
                 }
-                System.out.println("\nSérie '" + serieAtual.getDadosSerie().titulo() + "' adicionada com sucesso!");
+            } else {
+                System.out.println("\nA série '" + nome + "' não foi encontrada.");
             }
         } else {
             System.out.println("Nome da série não pode ser vazio.");
+        }
+    }
+
+    private void buscarVariasSeries() {
+        System.out.println("Digite os nomes das séries separados por vírgula (ex: halo, teen wolf):");
+        String nomes = entrada.nextLine();
+        if (nomes != null && !nomes.isBlank()) {
+            Arrays.stream(nomes.split(","))
+                    .map(String::trim)
+                    .filter(n -> !n.isEmpty())
+                    .forEach(this::buscarSeriePorNome);
+        }
+    }
+
+    private void buscarSeriePorCategoria() {
+        System.out.println("Digite a categoria/gênero para busca: ");
+        var nomeGenero = entrada.nextLine();
+        try {
+            Categoria categoria = Categoria.fromString(nomeGenero);
+            List<Serie> seriesPorCategoria = series.stream()
+                    .filter(s -> s.getGenero() == categoria)
+                    .collect(Collectors.toList());
+
+            if (seriesPorCategoria.isEmpty()) {
+                System.out.println("Nenhuma série encontrada para a categoria " + categoria);
+            } else {
+                System.out.println("\n--- SÉRIES DA CATEGORIA " + categoria + " ---");
+                seriesPorCategoria.forEach(s -> System.out.println(s.getTitulo()));
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Categoria não reconhecida.");
         }
     }
 
@@ -72,13 +117,22 @@ public class Principal {
             return;
         }
 
+        Map<Categoria, List<Serie>> seriesPorCategoria = series.stream()
+                .collect(Collectors.groupingBy(Serie::getGenero));
+
+        System.out.println("\n--- SÉRIES CADASTRADAS POR CATEGORIA ---");
+        seriesPorCategoria.forEach((categoria, lista) -> {
+            System.out.println("\n" + categoria + ":");
+            lista.forEach(s -> System.out.printf("- %s%n", s.getTitulo()));
+        });
+
         List<Serie> ordenadas = series.stream()
-                .sorted(Comparator.comparing(s -> s.getDadosSerie().titulo(), String.CASE_INSENSITIVE_ORDER))
+                .sorted(Comparator.comparing(Serie::getTitulo, String.CASE_INSENSITIVE_ORDER))
                 .toList();
 
-        System.out.println("\n--- SÉRIES CADASTRADAS ---");
+        System.out.println("\n--- LISTA COMPLETA ---");
         for (int i = 0; i < ordenadas.size(); i++) {
-            System.out.printf("%d - %s%n", i + 1, ordenadas.get(i).getDadosSerie().titulo());
+            System.out.printf("%d - %s%n", i + 1, ordenadas.get(i).getTitulo());
         }
 
         int escolha = LeitorInteiro.ler(
@@ -87,16 +141,16 @@ public class Principal {
                 0,
                 ordenadas.size()
         );
-    if(escolha > 0){
-        serieAtual = ordenadas.get(escolha - 1);
-        menuSerieEspecifica();
-    }
+        if (escolha > 0) {
+            serieAtual = ordenadas.get(escolha - 1);
+            menuSerieEspecifica();
+        }
     }
 
     public void menuSerieEspecifica() {
         boolean manterNaSerie = true;
         while (manterNaSerie) {
-            System.out.println("\nMenu para: " + serieAtual.getDadosSerie().titulo());
+            System.out.println("\nMenu para: " + serieAtual.getTitulo());
             System.out.println("1 - Exibir todos os episódios");
             System.out.println("2 - Exibir Top 5 episódios");
             System.out.println("3 - Filtrar episódios por ano");
@@ -123,13 +177,16 @@ public class Principal {
 
     private void exibirDetalhesSerie() {
         System.out.println("\n--- DETALHES DA SÉRIE ---");
-        System.out.println("Título: " + serieAtual.getDadosSerie().titulo());
+        System.out.println("Título: " + serieAtual.getTitulo());
+        System.out.println("Gênero: " + serieAtual.getGenero());
         System.out.println("Ano de Lançamento: " + serieAtual.getDadosSerie().ano());
-        System.out.println("Total de Temporadas: " + serieAtual.getDadosSerie().totalTemporadas());
-        System.out.println("Avaliação (IMDB): " + serieAtual.getDadosSerie().avaliacao());
+        System.out.println("Total de Temporadas: " + serieAtual.getTotalTemporadas());
+        System.out.println("Avaliação (IMDB): " + serieAtual.getAvaliacao());
+        System.out.println("Atores: " + serieAtual.getAtores());
+        System.out.println("Sinopse: " + serieAtual.getSinopse());
         System.out.println("Total de Episódios: " + serieAtual.getEpisodios().size());
         DoubleSummaryStatistics est = estatisticas(serieAtual.getEpisodios(), e -> true);
-        System.out.printf("Média de Avaliação dos Episódios: %.2f%n", est.getAverage());
+        System.out.printf("Média de Avaliação (dos %d episódios avaliados): %.2f%n", est.getCount(), est.getAverage());
     }
 
     private boolean carregarSerie() {
@@ -185,7 +242,7 @@ public class Principal {
                 "Digite o número da temporada:",
                 entrada,
                 1,
-                serieAtual.getDadosSerie().totalTemporadas()
+                serieAtual.getTotalTemporadas()
         );
 
         var est = estatisticas(serieAtual.getEpisodios(), e -> e.getTemporada() == num);
