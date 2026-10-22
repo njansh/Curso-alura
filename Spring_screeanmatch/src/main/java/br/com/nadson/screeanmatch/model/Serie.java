@@ -33,26 +33,17 @@ public class Serie {
     @Column(length = 500)
     private String atores;
 
-    @Transient
-    private DadosSerie dadosSerie;
-
-
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Episodio> episodios = new ArrayList<>();
-
-    @Transient
-    private static final Tradutor tradutor = new Tradutor();
 
     public Serie() {
     }
 
     public Serie(DadosSerie dadosSerie, List<Episodio> episodios) {
-        this.dadosSerie = dadosSerie;
-
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
 
-        this.avaliacao = dadosSerie.avaliacao().equalsIgnoreCase("N/A")
+        this.avaliacao = (dadosSerie.avaliacao() == null || dadosSerie.avaliacao().equalsIgnoreCase("N/A"))
                 ? 0.0
                 : Double.parseDouble(dadosSerie.avaliacao());
 
@@ -61,15 +52,12 @@ public class Serie {
         this.poster = dadosSerie.poster();
 
         if (dadosSerie.sinopse() != null && !dadosSerie.sinopse().isBlank()) {
-            this.sinopse = tradutor.traduzir(dadosSerie.sinopse()).trim();
+            this.sinopse = Tradutor.traduzir(dadosSerie.sinopse()).trim();
         } else {
             this.sinopse = "Sinopse não disponível";
         }
 
-        this.episodios = episodios == null
-                ? new ArrayList<>()
-                : new ArrayList<>(episodios);
-        this.episodios.forEach(e -> e.setSerie(this));
+        setEpisodios(episodios);
     }
 
     public long getId() {
@@ -100,24 +88,21 @@ public class Serie {
         return sinopse;
     }
 
-    public String getPoster() {
-        return poster;
+    public void setSinopse(String sinopse) {
+        this.sinopse = sinopse;
     }
 
-    public DadosSerie getDadosSerie() {
-        return dadosSerie;
+    public String getPoster() {
+        return poster;
     }
 
     public List<Episodio> getEpisodios() {
         return Collections.unmodifiableList(episodios);
     }
-    public void setEpisodios(List<Episodio> episodios) {
-        episodios.forEach(e -> e.setSerie(this));
-        this.episodios = episodios;
-    }
 
-    public void setSinopse(String sinopse) {
-        this.sinopse = sinopse;
+    public final void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios == null ? new ArrayList<>() : new ArrayList<>(episodios);
+        this.episodios.forEach(e -> e.setSerie(this));
     }
 
     @Override
@@ -128,7 +113,6 @@ public class Serie {
                 ", avaliacao=" + avaliacao +
                 ", atores='" + atores + '\'' +
                 ", sinopse='" + sinopse + '\'' +
-                ", poster='" + poster + '\'' +
-                ", episodios=" + episodios;
+                ", poster='" + poster + '\'';
     }
 }
