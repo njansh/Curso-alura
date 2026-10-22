@@ -1,0 +1,131 @@
+Listagem de caminhos de pasta
+O número de série do volume é D0BC-5736
+C:.
+|   .gitattributes
+|   .gitignore
+|   exportar_projeto.bat
+|   HELP.md
+|   mvnw
+|   mvnw.cmd
+|   pom.xml
+|   
++---.idea
+|   |   .gitignore
+|   |   compiler.xml
+|   |   dbnavigator.xml
+|   |   encodings.xml
+|   |   jarRepositories.xml
+|   |   misc.xml
+|   |   vcs.xml
+|   |   workspace.xml
+|   |   
+|   \---codeStyles
+|           codeStyleConfig.xml
+|           Project.xml
+|           
++---.mvn
+|   \---wrapper
+|           maven-wrapper.properties
+|           
++---export
+|       estrutura_projeto.txt
+|       
++---src
+|   +---main
+|   |   +---java
+|   |   |   \---br
+|   |   |       \---com
+|   |   |           \---nadson
+|   |   |               \---screeanmatch
+|   |   |                   |   SpringScreeanmatchApplication.java
+|   |   |                   |   
+|   |   |                   +---enums
+|   |   |                   |       Categoria.java
+|   |   |                   |       
+|   |   |                   +---exception
+|   |   |                   |       LimiteRequisicoesExcedidoException.java
+|   |   |                   |       
+|   |   |                   +---interfaces
+|   |   |                   |       IConverterDados.java
+|   |   |                   |       
+|   |   |                   +---model
+|   |   |                   |       DadosEpisodio.java
+|   |   |                   |       DadosSerie.java
+|   |   |                   |       DadosTemporada.java
+|   |   |                   |       Episodio.java
+|   |   |                   |       Serie.java
+|   |   |                   |       
+|   |   |                   +---principal
+|   |   |                   |       Principal.java
+|   |   |                   |       
+|   |   |                   +---repository
+|   |   |                   |       EpisodioRepository.java
+|   |   |                   |       SerieRepository.java
+|   |   |                   |       
+|   |   |                   +---service
+|   |   |                   |       ConsumoApi.java
+|   |   |                   |       ConverterDados.java
+|   |   |                   |       DockerService.java
+|   |   |                   |       TesteTradutor.java
+|   |   |                   |       Tradutor.java
+|   |   |                   |       
+|   |   |                   \---util
+|   |   |                           LeitorInteiro.java
+|   |   |                           
+|   |   \---resources
+|   |           application.properties
+|   |           
+|   \---test
+|       \---java
+|           \---br
+|               \---com
+|                   \---nadson
+|                       \---screeanmatch
+|                               SpringScreeanmatchApplicationTests.java
+|                               
+\---target
+    +---classes
+    |   |   application.properties
+    |   |   
+    |   \---br
+    |       \---com
+    |           \---nadson
+    |               \---screeanmatch
+    |                   |   SpringScreeanmatchApplication.class
+    |                   |   
+    |                   +---enums
+    |                   |       Categoria.class
+    |                   |       
+    |                   +---exception
+    |                   |       LimiteRequisicoesExcedidoException.class
+    |                   |       
+    |                   +---interfaces
+    |                   |       IConverterDados.class
+    |                   |       
+    |                   +---model
+    |                   |       DadosEpisodio.class
+    |                   |       DadosSerie.class
+    |                   |       DadosTemporada.class
+    |                   |       Episodio.class
+    |                   |       Serie.class
+    |                   |       
+    |                   +---principal
+    |                   |       Principal.class
+    |                   |       
+    |                   +---repository
+    |                   |       EpisodioRepository.class
+    |                   |       SerieRepository.class
+    |                   |       
+    |                   +---service
+    |                   |       ConsumoApi.class
+    |                   |       ConverterDados.class
+    |                   |       DockerService.class
+    |                   |       TesteTradutor.class
+    |                   |       Tradutor$1.class
+    |                   |       Tradutor.class
+    |                   |       
+    |                   \---util
+    |                           LeitorInteiro.class
+    |                           
+    \---generated-sources
+        \---annotations

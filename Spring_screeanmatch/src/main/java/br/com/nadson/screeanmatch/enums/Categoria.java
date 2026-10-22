@@ -11,6 +11,7 @@ public enum Categoria {
     AVENTURA("Adventure", "Aventura"),
     FANTASIA("Fantasy", "Fantasia"),
     SUSPENSE("Thriller", "Suspense"),
+    BIOGRAFIA("Biography", "Biografia"),
     DESCONHECIDO("Unknown", "Desconhecido");
 
     private String categoriaOmdb;
