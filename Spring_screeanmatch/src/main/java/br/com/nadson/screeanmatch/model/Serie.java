@@ -100,7 +100,7 @@ public class Serie {
         return Collections.unmodifiableList(episodios);
     }
 
-    public final void setEpisodios(List<Episodio> episodios) {
+    public void setEpisodios(List<Episodio> episodios) {
         this.episodios = episodios == null ? new ArrayList<>() : new ArrayList<>(episodios);
         this.episodios.forEach(e -> e.setSerie(this));
     }

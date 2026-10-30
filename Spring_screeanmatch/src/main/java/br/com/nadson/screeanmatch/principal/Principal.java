@@ -48,8 +48,10 @@ public class Principal {
                     3 - Buscar por categoria
                     4 - Buscar várias séries
                     5 - Corrigir sinopses com erro de tradução
-                    6 - Sair
-                    """, entrada, 1, 6);
+                    6 - Buscar serie pelo ator
+                    7 - top 5 no banco
+                    0- Sair
+                    """, entrada, 0, 100);
 
             switch (num) {
                 case 1 -> buscarSerie();
@@ -57,13 +59,17 @@ public class Principal {
                 case 3 -> buscarSeriePorCategoria();
                 case 4 -> buscarVariasSeries();
                 case 5 -> corrigirSinopsesComAviso();
-                case 6 -> {
+                case 6 -> buscarSeriePorAtores();
+                case 7 -> buscarTop5Series();
+                case 0 -> {
                     return;
                 }
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
+
+
 
     private void buscarSerie() {
         System.out.println("Diga o nome da série: ");
@@ -266,6 +272,59 @@ public class Principal {
         exibirMediaAvaliacoes("Média da Temporada " + num, episodiosTemporada);
         episodiosTemporada.forEach(e -> imprimirEpisodio(e, false));
     }
+    private void buscarSeriePorAtores() {
+        System.out.println("Digite o nome ou trecho do nome do ator:");
+        String trecho = entrada.nextLine();
+
+        if (trecho == null || trecho.isBlank()) {
+            System.out.println("Nome do ator não pode ser vazio.");
+            return;
+        }
+
+        String termo = trecho.trim();
+        List<Serie> encontrados = serieRepository.findByAtoresContainingIgnoreCase(termo);
+
+        if (encontrados.isEmpty()) {
+            System.out.printf("Nenhuma série encontrada para o termo '%s'.%n", termo);
+            return;
+        }
+
+        System.out.println("\n--- RESULTADOS ENCONTRADOS ---");
+
+        encontrados.forEach(serie -> {
+            String atorCorrespondente = Arrays.stream(serie.getAtores().split(","))
+                    .map(String::trim)
+                    .filter(ator -> ator.toLowerCase().contains(termo.toLowerCase()))
+                    .findFirst()
+                    .orElse(serie.getAtores());
+
+                System.out.printf("- Série: %-25s | Ator: %-25s | Nota: %.1f%n",
+                        serie.getTitulo(),
+                        atorCorrespondente,
+                        serie.getAvaliacao());
+        });
+    }
+
+    private void buscarTop5Series() {
+        List<Serie> seriesTop=serieRepository.findTop5ByOrderByAvaliacaoDesc();
+
+        if (seriesTop.isEmpty()) {
+            System.out.println("Nenhuma série cadastrada no banco.");
+            return;
+        }
+        seriesTop.forEach(s -> {
+                    System.out.printf("- Série: %-25s | Nota: %.1f%n",
+                            s.getTitulo(),
+                            s.getAvaliacao());
+                }
+
+                );
+
+
+
+
+    }
+
 
     private void filtrarPorAno() {
         int ano = LeitorInteiro.ler("A partir de que ano?", entrada);
