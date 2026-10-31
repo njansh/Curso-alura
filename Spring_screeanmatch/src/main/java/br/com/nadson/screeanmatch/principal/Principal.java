@@ -49,9 +49,9 @@ public class Principal {
                     4 - Buscar várias séries
                     5 - Corrigir sinopses com erro de tradução
                     6 - Buscar serie pelo ator
-                    7 - top 5 no banco
-                    0- Sair
-                    """, entrada, 0, 100);
+                    7 - Top 5 no banco
+                    0 - Sair
+                    """, entrada, 0, 7);
 
             switch (num) {
                 case 1 -> buscarSerie();
@@ -68,8 +68,6 @@ public class Principal {
             }
         }
     }
-
-
 
     private void buscarSerie() {
         System.out.println("Diga o nome da série: ");
@@ -133,22 +131,34 @@ public class Principal {
     }
 
     private void buscarSeriePorCategoria() {
-        System.out.println("Digite a categoria/gênero para busca: ");
-        String nomeGenero = entrada.nextLine();
+        Categoria[] categorias = Categoria.values();
 
-        try {
-            Categoria categoria = Categoria.fromString(nomeGenero);
-            List<Serie> seriesPorCategoria = serieRepository.findByGenero(categoria);
-
-            if (seriesPorCategoria.isEmpty()) {
-                System.out.println("Nenhuma série encontrada para a categoria " + categoria);
-            } else {
-                System.out.println("\n--- SÉRIES DA CATEGORIA " + categoria + " ---");
-                seriesPorCategoria.forEach(s -> System.out.println(s.getTitulo()));
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Categoria não reconhecida.");
+        System.out.println("\n--- CATEGORIAS DISPONÍVEIS ---");
+        for (int i = 0; i < categorias.length; i++) {
+            System.out.printf("%d - %s%n", i + 1, categorias[i]);
         }
+
+        int escolha = LeitorInteiro.ler(
+                "\nEscolha o número da categoria (ou 0 para voltar):",
+                entrada,
+                0,
+                categorias.length
+        );
+
+        if (escolha == 0) return;
+
+        Categoria categoriaSelecionada = categorias[escolha - 1];
+        List<Serie> seriesPorCategoria = serieRepository.findByGenero(categoriaSelecionada);
+
+        if (seriesPorCategoria.isEmpty()) {
+            System.out.println("\nNenhuma série encontrada para a categoria " + categoriaSelecionada);
+            return;
+        }
+
+        System.out.println("\n--- SÉRIES DA CATEGORIA " + categoriaSelecionada + " ---");
+        seriesPorCategoria.forEach(s ->
+                System.out.printf("- %-25s | Nota: %.1f%n", s.getTitulo(), s.getAvaliacao())
+        );
     }
 
     private void listarSeries() {
@@ -272,6 +282,7 @@ public class Principal {
         exibirMediaAvaliacoes("Média da Temporada " + num, episodiosTemporada);
         episodiosTemporada.forEach(e -> imprimirEpisodio(e, false));
     }
+
     private void buscarSeriePorAtores() {
         System.out.println("Digite o nome ou trecho do nome do ator:");
         String trecho = entrada.nextLine();
@@ -298,33 +309,28 @@ public class Principal {
                     .findFirst()
                     .orElse(serie.getAtores());
 
-                System.out.printf("- Série: %-25s | Ator: %-25s | Nota: %.1f%n",
-                        serie.getTitulo(),
-                        atorCorrespondente,
-                        serie.getAvaliacao());
+            System.out.printf("- Série: %-25s | Ator: %-25s | Nota: %.1f%n",
+                    serie.getTitulo(),
+                    atorCorrespondente,
+                    serie.getAvaliacao());
         });
     }
 
     private void buscarTop5Series() {
-        List<Serie> seriesTop=serieRepository.findTop5ByOrderByAvaliacaoDesc();
+        List<Serie> seriesTop = serieRepository.findTop5ByOrderByAvaliacaoDesc();
 
         if (seriesTop.isEmpty()) {
             System.out.println("Nenhuma série cadastrada no banco.");
             return;
         }
-        seriesTop.forEach(s -> {
-                    System.out.printf("- Série: %-25s | Nota: %.1f%n",
-                            s.getTitulo(),
-                            s.getAvaliacao());
-                }
 
-                );
-
-
-
-
+        System.out.println("\n--- TOP 5 SÉRIES ---");
+        seriesTop.forEach(s ->
+                System.out.printf("- Série: %-25s | Nota: %.1f%n",
+                        s.getTitulo(),
+                        s.getAvaliacao())
+        );
     }
-
 
     private void filtrarPorAno() {
         int ano = LeitorInteiro.ler("A partir de que ano?", entrada);
@@ -406,10 +412,6 @@ public class Principal {
 
         System.out.println("\nProcesso de correção finalizado!");
     }
-
-    // =========================================================================
-    // MÉTODOS AUXILIARES
-    // =========================================================================
 
     private boolean carregarNovaSerieDaApi(String nomeBusca) {
         DadosSerie dados = obterDadosSerieApi(nomeBusca);
