@@ -50,8 +50,10 @@ public class Principal {
                     5 - Corrigir sinopses com erro de tradução
                     6 - Buscar serie pelo ator
                     7 - Top 5 no banco
+                    8 - Buscar series pela quantidade de temporadas
+                    9 - Buscar series por nota minima
                     0 - Sair
-                    """, entrada, 0, 7);
+                    """, entrada, 0, 9);
 
             switch (num) {
                 case 1 -> buscarSerie();
@@ -61,12 +63,35 @@ public class Principal {
                 case 5 -> corrigirSinopsesComAviso();
                 case 6 -> buscarSeriePorAtores();
                 case 7 -> buscarTop5Series();
+                case 8 ->buscarSeriesPelaQuantidadeTemporadas();
+                case 9 ->buscarSeriePorNota();
                 case 0 -> {
                     return;
                 }
                 default -> System.out.println("Opção inválida.");
             }
         }
+    }
+
+    private void buscarSeriePorNota() {
+    System.out.println("Digite a nota Minima: ");
+    double notaMinima = entrada.nextDouble();
+    List<Serie> series = serieRepository.findByAvaliacaoGreaterThanEqual(notaMinima);
+    series.forEach(s->
+            System.out.printf("- Série: %-25s | Nota: %.1f%n",
+                    s.getTitulo(),
+                    s.getAvaliacao()
+            ));
+    }
+
+    private void buscarSeriesPelaQuantidadeTemporadas() {
+        int num = LeitorInteiro.ler("Digite a quantidade de temporadas: ", entrada, 1, 100);
+        List<Serie> series = serieRepository.SeriesPorTemporadaMaxima(num);
+        series.forEach(s->
+                System.out.printf("- Série: %-25s | Temporadas: %d%n",
+                        s.getTitulo(),
+                        s.getTotalTemporadas()
+                ));
     }
 
     private void buscarSerie() {
@@ -148,7 +173,7 @@ public class Principal {
         if (escolha == 0) return;
 
         Categoria categoriaSelecionada = categorias[escolha - 1];
-        List<Serie> seriesPorCategoria = serieRepository.findByGenero(categoriaSelecionada);
+        List<Serie> seriesPorCategoria = serieRepository.seriePorGenero(categoriaSelecionada);
 
         if (seriesPorCategoria.isEmpty()) {
             System.out.println("\nNenhuma série encontrada para a categoria " + categoriaSelecionada);
@@ -293,7 +318,7 @@ public class Principal {
         }
 
         String termo = trecho.trim();
-        List<Serie> encontrados = serieRepository.findByAtoresContainingIgnoreCase(termo);
+        List<Serie> encontrados = serieRepository.SeriesPorAtor(termo);
 
         if (encontrados.isEmpty()) {
             System.out.printf("Nenhuma série encontrada para o termo '%s'.%n", termo);
@@ -371,7 +396,7 @@ public class Principal {
     }
 
     public void corrigirSinopsesComAviso() {
-        List<Serie> seriesComErro = serieRepository.findBySinopseContainingIgnoreCase("MYMEMORY WARNING");
+        List<Serie> seriesComErro = serieRepository.buscarSinopse("MYMEMORY WARNING");
 
         if (seriesComErro.isEmpty()) {
             System.out.println("Nenhuma série com erro de tradução encontrada no banco!");
