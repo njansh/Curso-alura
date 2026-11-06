@@ -27,7 +27,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     // List<Serie> findTop5ByOrderByAvaliacaoDesc();
     @Query("SELECT s FROM Serie s ORDER BY s.avaliacao DESC LIMIT 5")
-    List<Serie> findTop5ByOrderByAvaliacaoDesc();
+    List<Serie> top5Series();
 
     // List<Serie> findByTotalTemporadasLessThanEqualOrderByTotalTemporadasAsc(int num);
     @Query("SELECT s FROM Serie s WHERE s.totalTemporadas <= :num ORDER BY s.totalTemporadas ASC")
@@ -35,5 +35,5 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     // List<Serie> findByAvaliacaoGreaterThanEqualOrderByAvaliacaoDesc(double notaMinima);
     @Query("SELECT s FROM Serie s WHERE s.avaliacao >= :notaMinima ORDER BY s.avaliacao DESC")
-    List<Serie> findByAvaliacaoGreaterThanEqual(@Param("notaMinima") double notaMinima);
+    List<Serie> seriesComAvaliaçãoMinima(@Param("notaMinima") double notaMinima);
 }

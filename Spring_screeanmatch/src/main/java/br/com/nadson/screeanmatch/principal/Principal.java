@@ -76,7 +76,7 @@ public class Principal {
     private void buscarSeriePorNota() {
     System.out.println("Digite a nota Minima: ");
     double notaMinima = entrada.nextDouble();
-    List<Serie> series = serieRepository.findByAvaliacaoGreaterThanEqual(notaMinima);
+    List<Serie> series = serieRepository.seriesComAvaliaçãoMinima(notaMinima);
     series.forEach(s->
             System.out.printf("- Série: %-25s | Nota: %.1f%n",
                     s.getTitulo(),
@@ -86,7 +86,7 @@ public class Principal {
 
     private void buscarSeriesPelaQuantidadeTemporadas() {
         int num = LeitorInteiro.ler("Digite a quantidade de temporadas: ", entrada, 1, 100);
-        List<Serie> series = serieRepository.SeriesPorTemporadaMaxima(num);
+        List<Serie> series = serieRepository.seriesPorTemporadaMaxima(num);
         series.forEach(s->
                 System.out.printf("- Série: %-25s | Temporadas: %d%n",
                         s.getTitulo(),
@@ -281,7 +281,7 @@ public class Principal {
 
     private void exibirTop5() {
         System.out.println("\n--- TOP 5 EPISÓDIOS ---");
-        List<Episodio> top5 = episodioRepository.findTop5BySerieOrderByAvaliacaoDesc(serieAtual);
+        List<Episodio> top5 = episodioRepository.Top5Episodios(serieAtual);
 
         if (top5.isEmpty()) {
             System.out.println("Nenhum episódio encontrado.");
@@ -297,7 +297,7 @@ public class Principal {
                 entrada, 1, serieAtual.getTotalTemporadas()
         );
 
-        List<Episodio> episodiosTemporada = episodioRepository.findBySerieAndTemporada(serieAtual, num);
+        List<Episodio> episodiosTemporada = episodioRepository.seriesPorTemporadas(serieAtual, num);
 
         if (episodiosTemporada.isEmpty()) {
             System.out.println("Nenhum episódio encontrado para a temporada " + num);
@@ -318,7 +318,7 @@ public class Principal {
         }
 
         String termo = trecho.trim();
-        List<Serie> encontrados = serieRepository.SeriesPorAtor(termo);
+        List<Serie> encontrados = serieRepository.seriesPorAtor(termo);
 
         if (encontrados.isEmpty()) {
             System.out.printf("Nenhuma série encontrada para o termo '%s'.%n", termo);
@@ -342,7 +342,7 @@ public class Principal {
     }
 
     private void buscarTop5Series() {
-        List<Serie> seriesTop = serieRepository.findTop5ByOrderByAvaliacaoDesc();
+        List<Serie> seriesTop = serieRepository.top5Series();
 
         if (seriesTop.isEmpty()) {
             System.out.println("Nenhuma série cadastrada no banco.");
@@ -359,7 +359,7 @@ public class Principal {
 
     private void filtrarPorAno() {
         int ano = LeitorInteiro.ler("A partir de que ano?", entrada);
-        List<Episodio> episodiosPorAno = episodioRepository.findEpisodesBySeriesAndYear(serieAtual, ano);
+        List<Episodio> episodiosPorAno = episodioRepository.episodiosPorAno(serieAtual, ano);
 
         if (episodiosPorAno.isEmpty()) {
             System.out.println("Nenhum episódio encontrado a partir do ano " + ano);
@@ -372,7 +372,7 @@ public class Principal {
         System.out.println("Digite um trecho do nome do episódio:");
         String trecho = entrada.nextLine();
 
-        List<Episodio> encontrados = episodioRepository.findBySerieAndNomeContainingIgnoreCase(serieAtual, trecho);
+        List<Episodio> encontrados = episodioRepository.episodiosPorTrecho(serieAtual, trecho);
 
         if (encontrados.isEmpty()) {
             System.out.println("Episódio não encontrado.");
