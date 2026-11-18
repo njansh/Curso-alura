@@ -117,7 +117,7 @@ public class Principal {
             serieAtual = serieBuscada.get();
             System.out.println("\nSérie '" + serieAtual.getTitulo() + "' encontrada no banco de dados!");
 
-            if (episodioRepository.findBySerie(serieAtual).isEmpty()) {
+            if (episodioRepository.findBySerieId(serieAtual.getId()).isEmpty()) {
                 System.out.println("Série sem episódios no banco. Baixando episódios automaticamente...");
                 atualizarEpisodiosDaSerie();
             }
@@ -261,14 +261,14 @@ public class Principal {
         System.out.println("Atores: " + serieAtual.getAtores());
         System.out.println("Sinopse: " + serieAtual.getSinopse());
 
-        List<Episodio> episodios = episodioRepository.findBySerie(serieAtual);
+        List<Episodio> episodios = episodioRepository.findBySerieId(serieAtual.getId());
         System.out.println("Total de Episódios: " + episodios.size());
         exibirMediaAvaliacoes("Média geral dos episódios avaliados", episodios);
     }
 
     private void exibirSerieCompleta() {
         System.out.println("\n--- EPISÓDIOS DA SÉRIE ---");
-        List<Episodio> episodios = episodioRepository.findBySerie(serieAtual);
+        List<Episodio> episodios = episodioRepository.findBySerieId(serieAtual.getId());
 
         if (episodios.isEmpty()) {
             System.out.println("Nenhum episódio cadastrado para esta série.");
@@ -281,7 +281,7 @@ public class Principal {
 
     private void exibirTop5() {
         System.out.println("\n--- TOP 5 EPISÓDIOS ---");
-        List<Episodio> top5 = episodioRepository.Top5Episodios(serieAtual);
+        List<Episodio> top5 = episodioRepository.Top5Episodios(serieAtual.getId());
 
         if (top5.isEmpty()) {
             System.out.println("Nenhum episódio encontrado.");
@@ -297,7 +297,7 @@ public class Principal {
                 entrada, 1, serieAtual.getTotalTemporadas()
         );
 
-        List<Episodio> episodiosTemporada = episodioRepository.seriesPorTemporadas(serieAtual, num);
+        List<Episodio> episodiosTemporada = episodioRepository.seriesPorTemporadas(serieAtual.getId(), num);
 
         if (episodiosTemporada.isEmpty()) {
             System.out.println("Nenhum episódio encontrado para a temporada " + num);
@@ -359,7 +359,7 @@ public class Principal {
 
     private void filtrarPorAno() {
         int ano = LeitorInteiro.ler("A partir de que ano?", entrada);
-        List<Episodio> episodiosPorAno = episodioRepository.episodiosPorAno(serieAtual, ano);
+        List<Episodio> episodiosPorAno = episodioRepository.episodiosPorAno(serieAtual.getId(), ano);
 
         if (episodiosPorAno.isEmpty()) {
             System.out.println("Nenhum episódio encontrado a partir do ano " + ano);
@@ -372,7 +372,7 @@ public class Principal {
         System.out.println("Digite um trecho do nome do episódio:");
         String trecho = entrada.nextLine();
 
-        List<Episodio> encontrados = episodioRepository.episodiosPorTrecho(serieAtual, trecho);
+        List<Episodio> encontrados = episodioRepository.episodiosPorTrecho(serieAtual.getId(), trecho);
 
         if (encontrados.isEmpty()) {
             System.out.println("Episódio não encontrado.");

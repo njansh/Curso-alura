@@ -36,4 +36,6 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     // List<Serie> findByAvaliacaoGreaterThanEqualOrderByAvaliacaoDesc(double notaMinima);
     @Query("SELECT s FROM Serie s WHERE s.avaliacao >= :notaMinima ORDER BY s.avaliacao DESC")
     List<Serie> seriesComAvaliaçãoMinima(@Param("notaMinima") double notaMinima);
-}
+
+    @Query("SELECT s FROM Serie s JOIN s.episodios e GROUP BY s ORDER BY MAX(e.dataLancamento) DESC LIMIT 5")
+    List<Serie> findTop5ByOrderByEpisodiosDataLancamentoDesc();}
